@@ -6,7 +6,8 @@ nav{
 #editor{
     border: none;
     color:white;
-    height:50em;
+    font-size: 15px;
+    height:40em;
     text-align: left;
 }
 
@@ -28,7 +29,7 @@ nav{
 /** ELEMENTS **/
 .chart-demo .window { 
 	border:0.1em dotted #d4e06b; 	
-	width:14em; height:4em; 	
+	width:8em; height:4em; 	
 	line-height:4em;	
 }
 
@@ -64,6 +65,7 @@ nav{
 }
 
 .titlesADA h6{
+    box-shadow: 0 2px 2px -2px gray;
     color:#ccc;
     font-weight: bold;
 }

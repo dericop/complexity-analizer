@@ -5,34 +5,61 @@
         <title>ADA Ucaldas</title>
         <meta http-equiv="content-type" content="text/html;charset=utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, user-scalable=no"/>
-
+        
         <link rel="stylesheet" href="css/jsPlumbToolkit-defaults.css">
         <link rel="stylesheet" href="css/main.css">
         <link rel="stylesheet" href="css/jsPlumbToolkit-demo.css">
         <link rel="stylesheet" href="css/materialize.min.css">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="home.css">
         
     </head>
     <body data-demo-id="chart" data-library="dom">
+
+          <!-- Modal Structure -->
+          <div id="modalLoadContent" class="modal bottom-sheet">
+            <div class="modal-content">
+              <h3>¿Desea cargar uno de los siguientes algoritmos?</h3>
+              <ul>
+                  <li class="loadN"><a id="0">Torres de Hanoi</li></a>
+                  <li class="loadN"><a id="1">Reinas</li></a>
+                  <li class="loadN"><a id="2">Serie de Fibonacci</li></a>
+                  <li class="loadN"><a id="3">Mergesort</li></a>
+                  <li class="loadN"><a id="4">Quicksort</li></a>
+                  
+
+              </ul>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">No, quiero escribir uno propio</a>
+            </div>
+          </div>
+
             <nav>
                 <div class="nav-wrapper">
                   <a href="#" class="title_code">ANALIZADOR DE ALGORITMOS RECURSIVOS</a>
                   <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a class="waves-effect waves-light btn">Ejecutar</a>
+                        <a id="m_loadModalContent" class="waves-effect waves-light btn green darken-1">Cargar</a>
+                    </li>
+                    <li>
+                        <a class="waves-effect waves-light btn red darken-2 disabled">Ver Recurrencia</a>
+                    </li>
+                    <li>
+                        <a id="executeCode" class="waves-effect waves-light btn">Ejecutar</a>
                     </li>
                   </ul>
                 </div>
               </nav>
             <div class="row titlesADA">
-                <div class="col s4">
+                <div class="col s5">
                     <h6>
                         CÓDIGO
                     </h6>
                     
                 </div>
 
-                <div class="col s8">
+                <div class="col s7">
 
                     <h6>
                         ÁRBOL DE EJECUCIÓN
@@ -40,32 +67,23 @@
                 </div>
             </div>
             <div class="row">
-                <div id="code" class="col s4">
+                <div id="code" class="col s5">
                     
-                    <div id="editor">
-                        function foo(items) {
-                            var x = "All this is syntax highlighted";
-                            return x;
-                        }
-                    </div>
+                    <div id="editor"></div>
 
                 </pre>
                 </div>
-                <div class="col s8">
+                <div class="col s7">
                      <div class="jtk-demo-canvas canvas-wide chart-demo jtk-surface jtk-surface-nopan" id="canvas">
-                        <div class="window" id="chartWindow1">window one</div>
-                        <div class="window" id="chartWindow2">window two</div>
-                        <div class="window" id="chartWindow3">window three</div>
-                        <div class="window" id="chartWindow4">window four</div>
-                        <div class="window" id="chartWindow5">window five</div>
-                        <div class="window" id="chartWindow6">window six</div>
-                        <div class="window" id="chartWindow7">window six</div>
+                        <!--<div class="window" id="chartWindow1">n = 16</div> -->
+                        
+                        
                     </div>
                 </div>
             </div>
            
-
-   
+       
+           
            
     
 
