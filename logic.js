@@ -25,14 +25,15 @@ $(document).ready(function(){
         $('#modalLoadContent').openModal();
     };
 
-    pk_ada.prototype.dismiss = function(){
-        //pk_ada.curId -= 1;
+    pk_ada.prototype.cleanCodeArea = function(){
+        $("#canvas").empty();
+        pk_ada.currentNode = 0;
     }
 
     pk_ada.prototype.drawNode = function(padre){
         pk_ada.currentNode += 1;
 
-        $("#canvas").append("<div class='window' id='chartWindow"+pk_ada.currentNode+"'></div");
+        $("#canvas").append("<div class='window' id='chartWindow"+pk_ada.currentNode+"'>"+pk_ada.currentNode+"</div");
         var node = $("#chartWindow"+pk_ada.currentNode)[0];
         
         pk_ada.instance.addEndpoint(node, {
@@ -55,15 +56,12 @@ $(document).ready(function(){
                 [ "Arrow", { location: 0.8 }, arrowCommon ]
             ];
 
-            //console.log("chartWindow"+(pk_ada.currentNode - 1)+"-bottom");
             pk_ada.instance.connect({uuids: ["chartWindow"+(padre)+"-bottom", "chartWindow"+pk_ada.currentNode+"-top" ], overlays: overlays});
         }
 
         console.log("Padre: "+padre+" CurrentNode:"+pk_ada.currentNode);
 
         return pk_ada.currentNode;
-
-        
 
     }
 
@@ -79,32 +77,14 @@ $(document).ready(function(){
 
             var windows = jsPlumb.getSelector(".window");
             pk_ada.instance.draggable(windows);
-            // Agregar los puntos de conexión de los nodos.
-            /*for (var i = 0; i < windows.length; i++) {
-                pk_ada.prototype.instance.addEndpoint(windows[i], {
-                    uuid: windows[i].getAttribute("id") + "-bottom",
-                    anchor: "Bottom",
-                    maxConnections: -1
-                });
-                pk_ada.prototype.instance.addEndpoint(windows[i], {
-                    uuid: windows[i].getAttribute("id") + "-top",
-                    anchor: "Top",
-                    maxConnections: -1
-                });
-            }*/
-
-           /* pk_ada.prototype.instance.connect({uuids: ["chartWindow3-bottom", "chartWindow6-top" ], overlays: overlays});
-            pk_ada.prototype.instance.connect({uuids: ["chartWindow1-bottom", "chartWindow2-top" ], overlays: overlays});
-            pk_ada.prototype.instance.connect({uuids: ["chartWindow1-bottom", "chartWindow3-top" ], overlays: overlays});
-            pk_ada.prototype.instance.connect({uuids: ["chartWindow2-bottom", "chartWindow4-top" ], overlays: overlays});
-            pk_ada.prototype.instance.connect({uuids: ["chartWindow2-bottom", "chartWindow5-top" ], overlays: overlays});
             
-            */
+            
             jsPlumb.fire("jsPlumbDemoLoaded", pk_ada.instance);
         }else{
             console.error("No se encuentra la referencia al editor");
         }
     }
+
 
 
     //----------------------------- Instanciación del paquete ---------------------------------------------//
@@ -123,6 +103,7 @@ $(document).ready(function(){
         /*
             * Suceso de eventos al presionar el botón de ejecución del código
         */
+        pk_ada.cleanCodeArea();
         pk_ada.executeCode();
 
     })
