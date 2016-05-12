@@ -1,5 +1,81 @@
 $(document).ready(function(){
 
+    function Node(){}; // Definición de la estructura nodo
+    Node.prototype.id = -1;
+    Node.prototype.x = 0;
+    Node.prototype.children = new Array();
+    Node.prototype.father = null;
+    Node.prototype.getPreviousSibling = function(){
+        if (this.father != null) {
+            for (var i = 0; i < this.father.children.length - 1; i++) {
+                if (this.id == this.father.children[i].id) {
+                    if (i != 0) return this.father.children[i - 1];
+                    else this;
+                }   
+            }
+        }
+    }
+    Node.prototype.isLeftMost = function(){
+        if (this.father != null) {
+            for (var i = 0; i < this.father.children.length - 1; i++) {
+                if (this.id == this.father.children[i].id) {
+                    if (i == 0) return true;
+                    else return false;
+                }   
+            }
+        }
+    }
+    Node.prototype.addChild = function(node){
+        this.children.push(node);
+    }
+
+    function Tree(){}; // Definición de la estructura árbol
+    Tree.prototype.root = null;
+    Tree.prototype.postOrder = function(node){
+        if (node = null)
+            return 0
+
+        node.children.forEach(function(item, index, arr){
+            this.postOrder(item);
+        })
+
+        calculateInitialX(node);
+    }
+    Tree.prototype.addChildToNode = function(idNode, idFather){
+
+        var node = new Node();
+        node.id = idNode;
+        node.children = new Array();
+        this.searchNode(idFather, this.root).addChild(node);
+    }
+    Tree.prototype.searchNode = function(idFather, node){
+        var nodes = [];
+        nodes.push(node);
+        while(nodes.length != 0){
+            var currentNode = nodes.shift();
+            if (currentNode.id == idFather) 
+                return currentNode
+            else{}
+                currentNode.children.forEach(function(item, index, arr){
+                    nodes.push(item);
+                })
+        }
+
+        return node;
+    }
+
+    Tree.prototype.calculateInitialX = function(node){
+        node.children.forEach(function(item, index, arr){
+            this.calculateInitialX(item);
+        })
+
+        if (!node.isLeftMost())
+            node.X = node.getPreviousSibling().x + 1;
+        else
+            node.X = 0;
+    }
+
+
     function pk_ada() {}; // Definición del paquete del proyecto.
      
     pk_ada.prototype.instance = jsPlumb.getInstance({
@@ -13,6 +89,8 @@ $(document).ready(function(){
                 EndpointHoverStyle: {fillStyle: "#ec9f2e" },
                 Container: "canvas"
     });
+
+    pk_ada.prototype.tree = new Tree();
     
     pk_ada.prototype.currentNode = 0; // Nodo actual para graficar sus hijos
 
@@ -31,10 +109,12 @@ $(document).ready(function(){
     }
 
     pk_ada.prototype.drawNode = function(padre){
+
         pk_ada.currentNode += 1;
 
         $("#canvas").append("<div class='window' id='chartWindow"+pk_ada.currentNode+"'>"+pk_ada.currentNode+"</div");
         var node = $("#chartWindow"+pk_ada.currentNode)[0];
+        $("#chartWindow"+pk_ada.currentNode).css({"left":"40em"});
         
         pk_ada.instance.addEndpoint(node, {
                     uuid: node.getAttribute("id") + "-bottom",
@@ -57,10 +137,16 @@ $(document).ready(function(){
             ];
 
             pk_ada.instance.connect({uuids: ["chartWindow"+(padre)+"-bottom", "chartWindow"+pk_ada.currentNode+"-top" ], overlays: overlays});
+            this.tree.addChildToNode(this.currentNode, padre);
+        }else{
+            var node = new Node();
+            node.id = this.currentNode;
+            node.children = new Array();
+            this.tree.root = node;
         }
 
-        console.log("Padre: "+padre+" CurrentNode:"+pk_ada.currentNode);
-
+        //console.log("Padre: "+padre+" CurrentNode:"+pk_ada.currentNode);
+        console.log(this.tree);
         return pk_ada.currentNode;
 
     }
@@ -72,7 +158,7 @@ $(document).ready(function(){
             // --------------------- Ejecución del código --------------------------------
             var code = editor.getValue();
             if (code != "") {
-                eval(code);
+                eval(code)
             }
 
             var windows = jsPlumb.getSelector(".window");
