@@ -53,7 +53,7 @@ $(document).ready(function(){
         node.id = idNode;
         node.children = new Array();
         var father = this.searchNode(idFather, this.root)
-        var level = this.searchLevel(idNode).level
+        var level = this.searchLevel(idNode, this.root).level
         node.father = father;
         node.level = level;
         father.addChild(node);
@@ -74,13 +74,13 @@ $(document).ready(function(){
         }
         return node;
     }
-    Tree.prototype.searchLevel = function(idNode, root){
+    Tree.prototype.searchLevel = function(idNode, node){
         var nodes = [];
         var lvl = 1;
         nodes.push(node);
         while(nodes.length != 0){
             var currentNode = nodes.shift();
-            if (currentNode.id == node){
+            if (currentNode.id == idNode){
                 currentNode.level = lvl; 
                 return currentNode
             }
