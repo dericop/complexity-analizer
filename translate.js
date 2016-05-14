@@ -1,3 +1,21 @@
+//TORRES DE HANOI
+pseudocode = 
+"hanoi(n,origen,auxiliar,destino)\n"+
+"begin\n"+
+"	arreglo10[20]\n"+
+"	if(n = 1)then\n"+
+"	begin\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"	end\n"+
+"	else\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"end"
+
+
 var array_functions= ['if','while','for','floor','ceil','length','slice','Uint8Array','print'];
 function first_replace(pseudocode){
 	newlines=remove_do(pseudocode)
@@ -191,23 +209,22 @@ function remove_do(line){
 	return line.replace(new RegExp('\\b' + 'do' + '\\b','g'), '')
 }
 function is_ignored_line(line){
-
-	return (new RegExp('{|}|^//')).test(line)
+	return (new RegExp('^\\s*\{|^\\s*\}|^\\s*\/\/','g')).test(line)
 }
 function is_init_array(line){
 
 	return (/^\s*([a-z]+[0-9]*)\[[0-9]+\]/g).test(line)
 }
 function test_and_get_line(line){
-	var newline=line//remove_tabs(line)
-	if(!is_ignored_line(newline)){
-		if(is_init_array(newline)){
-			lenght= ((newline.split('['))[1].split(']'))[0]
+/*	var newline=line//remove_tabs(line)
+*/	if(!is_ignored_line(line)){
+		if(is_init_array(line)){
+			lenght= ((line.split('['))[1].split(']'))[0]
 			lenght = parseInt(lenght, 10);
-			newline = newline.split('[')[0]+"= new Uint8Array("+lenght+")"
+			line = line.split('[')[0]+"= new Uint8Array("+lenght+")"
 		}
 	}
-	return newline
+	return line
 }
 function main(pseudocode){
 	console.log(pseudocode)
