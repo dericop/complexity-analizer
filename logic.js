@@ -3,11 +3,13 @@ $(document).ready(function(){
     function Node(){}; // Definición de la estructura nodo
     Node.prototype.id = -1;
     Node.prototype.x = 0;
+    Node.prototype.y = 0;
+    Node.prototype.level = 1;
     Node.prototype.children = new Array();
     Node.prototype.father = null;
     Node.prototype.getPreviousSibling = function(){
         if (this.father != null) {
-            for (var i = 0; i < this.father.children.length - 1; i++) {
+            for (var i = 0; i < this.father.children.length; i++) {
                 if (this.id == this.father.children[i].id) {
                     if (i != 0) return this.father.children[i - 1];
                     else this;
@@ -16,14 +18,16 @@ $(document).ready(function(){
         }
     }
     Node.prototype.isLeftMost = function(){
-        if (this.father != null) {
-            for (var i = 0; i < this.father.children.length - 1; i++) {
+        if (this.father == null) return true
+        else{
+            for (var i = 0; i < this.father.children.length; i++) {
                 if (this.id == this.father.children[i].id) {
                     if (i == 0) return true;
                     else return false;
                 }   
             }
-        }
+        } 
+        
     }
     Node.prototype.addChild = function(node){
         this.children.push(node);
@@ -32,47 +36,84 @@ $(document).ready(function(){
     function Tree(){}; // Definición de la estructura árbol
     Tree.prototype.root = null;
     Tree.prototype.postOrder = function(node){
-        if (node = null)
+        if (node == null)
             return 0
 
+        console.log(node);
+        var that = this;
         node.children.forEach(function(item, index, arr){
-            this.postOrder(item);
+            that.postOrder(item);
         })
 
-        calculateInitialX(node);
+        this.calculateInitialX(node);
     }
     Tree.prototype.addChildToNode = function(idNode, idFather){
 
         var node = new Node();
         node.id = idNode;
         node.children = new Array();
-        this.searchNode(idFather, this.root).addChild(node);
+        var father = this.searchNode(idFather, this.root)
+        var level = this.searchLevel(idNode).level
+        node.father = father;
+        node.level = level;
+        father.addChild(node);
     }
     Tree.prototype.searchNode = function(idFather, node){
         var nodes = [];
         nodes.push(node);
         while(nodes.length != 0){
             var currentNode = nodes.shift();
-            if (currentNode.id == idFather) 
+            if (currentNode.id == idFather){
                 return currentNode
-            else{}
+            }
+            else{
                 currentNode.children.forEach(function(item, index, arr){
                     nodes.push(item);
                 })
+            }
         }
-
+        return node;
+    }
+    Tree.prototype.searchLevel = function(idNode, root){
+        var nodes = [];
+        var lvl = 1;
+        nodes.push(node);
+        while(nodes.length != 0){
+            var currentNode = nodes.shift();
+            if (currentNode.id == node){
+                currentNode.level = lvl; 
+                return currentNode
+            }
+            else{
+                lvl += 1;
+                currentNode.children.forEach(function(item, index, arr){
+                    nodes.push(item);
+                })
+            }
+        }
         return node;
     }
 
     Tree.prototype.calculateInitialX = function(node){
-        node.children.forEach(function(item, index, arr){
+        /*node.children.forEach(function(item, index, arr){
             this.calculateInitialX(item);
-        })
+        })*/
 
-        if (!node.isLeftMost())
-            node.X = node.getPreviousSibling().x + 1;
-        else
+        if (!node.isLeftMost()){
+            node.X = node.getPreviousSibling().x + 200;
+            if (node.Y == null) node.Y = 60;
+            else node.Y = node.Y + 60;
+            var posX = node.X+"px";
+            var posY = node.Y+"px";
+            document.getElementById("chartWindow"+node.id).style.left = posX;
+            document.getElementById("chartWindow"+node.id).style.top = posX;
+
+            //$("#chartWindow7").css({"left":"50em;"});
+            pk_ada.instance.repaintEverything();
+            
+        }else
             node.X = 0;
+            node.Y = 0;
     }
 
 
@@ -90,7 +131,7 @@ $(document).ready(function(){
                 Container: "canvas"
     });
 
-    pk_ada.prototype.tree = new Tree();
+    pk_ada.prototype.tree = null;
     
     pk_ada.prototype.currentNode = 0; // Nodo actual para graficar sus hijos
 
@@ -100,6 +141,7 @@ $(document).ready(function(){
         /*
             * Evento inicial del paquete analizador.
         */
+        this.tree = new Tree();
         $('#modalLoadContent').openModal();
     };
 
@@ -114,7 +156,6 @@ $(document).ready(function(){
 
         $("#canvas").append("<div class='window' id='chartWindow"+pk_ada.currentNode+"'>"+pk_ada.currentNode+"</div");
         var node = $("#chartWindow"+pk_ada.currentNode)[0];
-        $("#chartWindow"+pk_ada.currentNode).css({"left":"40em"});
         
         pk_ada.instance.addEndpoint(node, {
                     uuid: node.getAttribute("id") + "-bottom",
@@ -146,7 +187,7 @@ $(document).ready(function(){
         }
 
         //console.log("Padre: "+padre+" CurrentNode:"+pk_ada.currentNode);
-        console.log(this.tree);
+        
         return pk_ada.currentNode;
 
     }
@@ -191,6 +232,10 @@ $(document).ready(function(){
         */
         pk_ada.cleanCodeArea();
         pk_ada.executeCode();
+        pk_ada.tree.postOrder(pk_ada.tree.root);
+        console.log(pk_ada.tree);
+        //$("#chartWindow7").css({"left":"10em;"});
+
 
     })
 
