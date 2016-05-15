@@ -13,6 +13,20 @@ pseudocode =
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "		call hanoi(n-1,auxiliar,origen,destino)\n"+
 "	end\n"+
+"end"+
+"hanoiiii(n,origen,auxiliar,destino)\n"+
+"begin\n"+
+"	arreglo10[20]\n"+
+"	if(n = 1)then\n"+
+"	begin\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"	end\n"+
+"	else\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
 "end"
 
 
@@ -209,6 +223,7 @@ function remove_do(line){
 	return line.replace(new RegExp('\\b' + 'do' + '\\b','g'), '')
 }
 function is_ignored_line(line){
+
 	return (new RegExp('^\\s*\{|^\\s*\}|^\\s*\/\/','g')).test(line)
 }
 function is_init_array(line){
@@ -216,8 +231,8 @@ function is_init_array(line){
 	return (/^\s*([a-z]+[0-9]*)\[[0-9]+\]/g).test(line)
 }
 function test_and_get_line(line){
-/*	var newline=line//remove_tabs(line)
-*/	if(!is_ignored_line(line)){
+	//var newline=line//remove_tabs(line)
+	if(!is_ignored_line(line)){
 		if(is_init_array(line)){
 			lenght= ((line.split('['))[1].split(']'))[0]
 			lenght = parseInt(lenght, 10);
@@ -225,6 +240,17 @@ function test_and_get_line(line){
 		}
 	}
 	return line
+}
+function add_params_to_execute(final_javascript){
+	var functions = final_javascript.match(/function\s[a-z]+\(.*\)\n\s*\{/g)
+	console.log(functions)
+	if (functions.length>0) {
+		new_function=functions[functions.length-1];
+		new_function=new_function.replace(')',',padre)')
+		new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
+		final_javascript=final_javascript.replace(functions[functions.length-1],new_function)
+	}
+	console.log(final_javascript)
 }
 function main(pseudocode){
 	console.log(pseudocode)
@@ -236,176 +262,6 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
-	console.log(new_code)
+	add_params_to_execute(new_code)
 }
 main(pseudocode)
-
-
-
-
-
-
-//TORRES DE HANOI
-/*pseudocode = 
-"hanoi(n,origen,auxiliar,destino)\n"+
-"begin\n"+
-"	if(n = 1)then\n"+
-"	begin\n"+
-"		print('mover disco del '+ origen +'al '+destino)\n"+
-"	end\n"+
-"	else\n"+
-"	begin\n"+
-"		call hanoi(n-1,origen,destino,auxiliar)\n"+
-"		print('mover disco del '+ origen +'al '+destino)\n"+
-"		call hanoi(n-1,auxiliar,origen,destino)\n"+
-"	end\n"+
-"end"*/
-
-
-
-
-// BUSQUEDA BINARIA RECURSIVA
-/*pseudocode = 
-"bbr(a[],x,liminf,limsup)\n"+
-"begin\n"+
-"	pos←-1\n"+
-"	if(limsup ≥ liminf)then\n"+
-"	begin\n"+
-"		mitad←(limsup+liminf)/2\n"+
-"		if(a[mitad] = x)then\n"+
-"		begin\n"+
-"			pos←mitad\n"+
-"		end\n"+
-"		else\n"+
-"		begin\n"+
-"			if(a[mitad] > x)then\n"+
-"			begin\n"+
-"				pos←bbr(a,x,liminf,mitad-1)\n"+
-"			end\n"+
-"			else\n"+
-"			begin\n"+
-"				pos←bbr(a,x,mitad+1,limsup-1)\n"+
-"			end\n"+
-"		end\n"+
-"	end\n"+
-"	↑pos\n"+
-"end*/
-
-
-
-
-//FACTORIAL
-/*pseudocode = 
-"fatorial(n)\n"+
-"begin\n"+
-"	f←0\n"+
-"	if((n=0) or (n=1))then\n"+
-"	begin\n"+
-"		f←1\n"+
-"	end\n"+
-"	else\n"+
-"		begin\n"+
-"			f←n*(call factorial(n-1)\n"+
-"		end\n"+
-"	↑f\n"+
-"end"*/
-
-
-
-
-//PRUEBA INICIAL
-/*pseudocode = 
-"x←0\n"+
-"y←'cadena'\n"+
-"z←T\n"+
-"v←F\n"+
-"►esto es un comentario\n"+
-"diccionario{'a':'aksjhd','b':2,2:'skjd'}\n"+
-"funcion1( a , sa[] )\n"+
-"begin\n"+
-"	variable←'camilo'\n"+
-"end\n"+
-"rutina1(param0,param1,arreglo[10][11][2])►comentariooooooooo\n"+
-"begin\n"+
-"	arreglo10[20]\n"+
-"	param1←arreglo[2][3]\n"+
-"	for param0←9 to length(arreglo[1..param1]) do\n"+
-"	begin\n"+
-"		if(param0<param1 and not(param1))then\n"+
-"		begin\n"+
-"			param0←param1\n"+
-"			arreglo10[20]\n"+
-"		end\n"+
-"	end\n"+
-"	while(param0<param1 and param1<2 or param2>3)do\n"+
-"	begin\n"+
-"		if(param0<param1 and not(param1))then\n"+
-"		begin\n"+
-"			param0←not(param1)\n"+
-"		end\n"+
-"	end\n"+
-"	tamaño←length(arreglo2)\n"+
-"	arreglo←NULL\n"+
-"	repeat\n"+
-"		if(param0<param1 and not(param1))then\n"+
-"		begin\n"+
-"			param0←param1 \n"+
-"		end\n"+
-"		else\n"+
-"			begin\n"+
-"				param1←param0\n"+
-"			end\n"+
-"	until(param0<param1 and param1<2 or param2>3)\n"+
-"	nuevoarreglo←arreglo[1..param1]\n"+
-"	modulo←param0 mod param1\n"+
-"	call rutina2(param0,param1,nuevoarreglo)\n"+
-"end\n"+
-"rutina2(param0,param1,arreglo[10][11][2])►comentariooooooooo\n"+
-"begin\n"+
-	"►esto es un comentario\n"+
-	"arreglo30[20]\n"+
-	"param1←arreglo[2][3]\n"+
-	"for param0←9 to ⌈param1⌉ do\n"+
-	"begin\n"+
-	"	if(param0<param1 and not(param1))then\n"+
-	"	begin\n"+
-	"		param0←param1\n"+
-	"	end\n"+
-		"for param0←F to ⌊((param1+(⌊param1⌋))⌋ do\n"+
-		"begin\n"+
-		"	if(param0<param1 and not(param1))then\n"+
-		"	begin\n"+
-		"		param0← ⌈param1⌉\n"+
-		"	end\n"+
-		"end\n"+
-	"end\n"+
-	"while(param0<param1 and param1<2 or param2>3)do\n"+
-	"begin\n"+
-	"	if(param0<param1 or not(param1))then\n"+
-	"	begin\n"+
-	"		param0←param1\n"+
-	"	end\n"+
-	"end\n"+
-	"tamaño←length(arreglo2)\n"+
-	"repeat\n"+
-	"	if(not(not(param0<param1) and not(param1)))then\n"+
-	"	begin\n"+
-	"		param0←param1\n"+
-	"	end\n"+
-	"	else\n"+
-	"		begin\n"+
-	"		if(T)then\n"+
-	"		begin\n"+
-	"			param1←'camilo'\n"+
-	"		end\n"+
-	"		if(param1←T and param2←F or NULL)then\n"+
-	"		begin\n"+
-	"			param1←param0\n"+
-	"		end\n"+
-	"		param1←param0\n"+
-	"	end\n"+
-	"until(param0<param1 and param1<2 or param2>3)\n"+
-	"nuevoarreglo←arreglo[1..param1]\n"+
-	"modulo←param0 mod param1\n"+
-"end\n"+
-"call rutina1(x,y,z,v)"*/
