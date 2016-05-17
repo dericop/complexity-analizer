@@ -39,23 +39,21 @@ $(document).ready(function(){
         if (node == null)
             return 0
 
-        console.log(node);
+        
         var that = this;
         node.children.forEach(function(item, index, arr){
             that.postOrder(item);
         })
-
         this.calculateInitialX(node);
     }
+    
     Tree.prototype.addChildToNode = function(idNode, idFather){
 
         var node = new Node();
         node.id = idNode;
         node.children = new Array();
         var father = this.searchNode(idFather, this.root)
-        var level = this.searchLevel(idNode, this.root).level
         node.father = father;
-        node.level = level;
         father.addChild(node);
     }
     Tree.prototype.searchNode = function(idFather, node){
@@ -74,46 +72,38 @@ $(document).ready(function(){
         }
         return node;
     }
-    Tree.prototype.searchLevel = function(idNode, node){
-        var nodes = [];
-        var lvl = 1;
-        nodes.push(node);
-        while(nodes.length != 0){
-            var currentNode = nodes.shift();
-            if (currentNode.id == idNode){
-                currentNode.level = lvl; 
-                return currentNode
-            }
-            else{
-                lvl += 1;
-                currentNode.children.forEach(function(item, index, arr){
-                    nodes.push(item);
-                })
+    Tree.prototype.searchLevel = function(node, lvl){
+        if (node != null) {
+            node.level = lvl;
+            node.Y = node.level * 130;
+            var children = node.children;
+            for (var i = 0; i < children.length; i++) {
+                this.searchLevel(children[i], lvl+1);
             }
         }
-        return node;
     }
 
     Tree.prototype.calculateInitialX = function(node){
         /*node.children.forEach(function(item, index, arr){
             this.calculateInitialX(item);
         })*/
-
+        var posX = 0;
+        var posY = node.Y+"px";
         if (!node.isLeftMost()){
             node.X = node.getPreviousSibling().x + 200;
-            if (node.Y == null) node.Y = 60;
-            else node.Y = node.Y + 60;
-            var posX = node.X+"px";
-            var posY = node.Y+"px";
-            document.getElementById("chartWindow"+node.id).style.left = posX;
-            document.getElementById("chartWindow"+node.id).style.top = posX;
+            posX = node.X+"px";
 
             //$("#chartWindow7").css({"left":"50em;"});
-            pk_ada.instance.repaintEverything();
             
         }else
             node.X = 0;
-            node.Y = 0;
+
+
+        document.getElementById("chartWindow"+node.id).style.left = posX;
+        document.getElementById("chartWindow"+node.id).style.top = posY;
+        pk_ada.instance.repaintEverything();
+
+
     }
 
 
@@ -183,6 +173,7 @@ $(document).ready(function(){
             var node = new Node();
             node.id = this.currentNode;
             node.children = new Array();
+            node.level = 1;
             this.tree.root = node;
         }
 
@@ -232,7 +223,9 @@ $(document).ready(function(){
         */
         pk_ada.cleanCodeArea();
         pk_ada.executeCode();
+        pk_ada.tree.searchLevel(pk_ada.tree.root, 1);
         pk_ada.tree.postOrder(pk_ada.tree.root);
+        
         console.log(pk_ada.tree);
         //$("#chartWindow7").css({"left":"10em;"});
 
