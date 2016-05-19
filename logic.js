@@ -75,13 +75,16 @@ $(document).ready(function(){
         })
         this.calculateInitialX(node);
     }
+    Tree.prototype.listOfNodes = {};
     
     Tree.prototype.addChildToNode = function(idNode, idFather){
 
         var node = new Node();
         node.id = idNode;
         node.children = new Array();
-        var father = this.searchNode(idFather, this.root)
+        this.listOfNodes[idNode] = node;
+        //var father = this.searchNode(idFather, this.root)
+        var father = this.listOfNodes[idFather];
         node.father = father;
         father.addChild(node);
     }
@@ -378,6 +381,7 @@ $(document).ready(function(){
             node.children = new Array();
             node.level = 1;
             this.tree.root = node;
+            this.tree.listOfNodes[this.currentNode] = node;
         }
 
         //console.log("Padre: "+padre+" CurrentNode:"+pk_ada.currentNode);
@@ -393,7 +397,8 @@ $(document).ready(function(){
             // --------------------- Ejecución del código --------------------------------
             var code = editor.getValue();
             if (code != "") {
-                eval(code)
+                var translate = main(code);
+                eval(translate)
             }
 
             var windows = jsPlumb.getSelector(".window");
@@ -441,10 +446,7 @@ $(document).ready(function(){
         //pk_ada.tree.postOrder(pk_ada.tree.root);
         pk_ada.tree.calculateInitialX(pk_ada.tree.root);
         pk_ada.tree.calculateFinalPositions(pk_ada.tree.root, 0);
-        console.log(pk_ada.tree);
         //$("#chartWindow7").css({"left":"10em;"});
-
-
     })
 
     $(".loadN").click(function(event){

@@ -250,7 +250,7 @@ function add_params_to_execute(final_javascript){
 		new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
 		final_javascript=final_javascript.replace(functions[functions.length-1],new_function)
 	}
-	console.log(final_javascript)
+	return final_javascript;
 }
 function main(pseudocode){
 	console.log(pseudocode)
@@ -262,6 +262,7 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
-	add_params_to_execute(new_code)
+	new_code = add_params_to_execute(new_code)
+	return new_code;
 }
 main(pseudocode)
