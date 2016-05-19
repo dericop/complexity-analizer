@@ -37,19 +37,86 @@
               <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">No, quiero escribir uno propio</a>
             </div>
           </div>
+          </div>
+
+          <!-- Modal Structure -->
+          <div id="modalTranslate" class="modal">
+            <div class="modal-content">
+              <h4>El código que has escrito se vería en javascript así: </h4>
+              <p id="javascript_modal">
+                function translate_to_floor(pseudocode){
+                    pseudocode=pseudocode.replace(new RegExp('⌊','g'), 'Math.floor(')
+                    pseudocode=pseudocode.replace(new RegExp('⌋','g'), ')')
+                    return pseudocode
+                }
+                function translate_to_ceil(pseudocode){
+                    pseudocode=pseudocode.replace(new RegExp('⌈','g'), 'Math.ceil(')
+                    pseudocode=pseudocode.replace(new RegExp('⌉','g'), ')')
+                    return pseudocode
+                }
+                function set_function_param(line){
+                    params= ((line.split("(")[1]).split(")")[0]).split(",")
+                    for (var i = 0; i params.length ; i++) {
+                        if (params[i] !== "") {
+                            name_param = params[i].match(/^\s*[a-z]+[0-9]*/g)[0]
+                            line=line.replace(params[i],name_param)
+                        }
+                    }
+                    return line
+                } function translate_to_floor(pseudocode){
+                    pseudocode=pseudocode.replace(new RegExp('⌊','g'), 'Math.floor(')
+                    pseudocode=pseudocode.replace(new RegExp('⌋','g'), ')')
+                    return pseudocode
+                }
+                function translate_to_ceil(pseudocode){
+                    pseudocode=pseudocode.replace(new RegExp('⌈','g'), 'Math.ceil(')
+                    pseudocode=pseudocode.replace(new RegExp('⌉','g'), ')')
+                    return pseudocode
+                }
+                function set_function_param(line){
+                    params= ((line.split("(")[1]).split(")")[0]).split(",")
+                    for (var i = 0; i params.length ; i++) {
+                        if (params[i] !== "") {
+                            name_param = params[i].match(/^\s*[a-z]+[0-9]*/g)[0]
+                            line=line.replace(params[i],name_param)
+                        }
+                    }
+                    return line
+                }
+
+              </p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            </div>
+          </div>
+
+          <!-- Modal Structure -->
+          <div id="modalRecurrence" class="modal">
+            <div class="modal-content">
+              <h4>La ecuación de recurrencia que modela el algoritmo descrito es: </h4>
+              <p id="recurrence_modal">
+                
+
+              </p>
+            </div>
+            <div class="modal-footer">
+              <a href="#!" class=" modal-action modal-close waves-effect waves-green btn-flat">Cerrar</a>
+            </div>
+          </div>
 
             <nav>
                 <div class="nav-wrapper">
                   <a href="#" class="title_code">ANALIZADOR DE ALGORITMOS RECURSIVOS</a>
                   <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
-                        <a id="" class="waves-effect waves-light btn red darken-1">Traducción</a>
+                        <a href = "#modalTranslate" id="m_modalTranslate" class="waves-effect waves-light btn red darken-1">Traducción</a>
                     </li>
                     <li>
                         <a id="m_loadModalContent" class="waves-effect waves-light btn green darken-1">Cargar</a>
                     </li>
                     <li>
-                        <a class="waves-effect waves-light btn red darken-2 disabled">Ver Recurrencia</a>
+                        <a id="m_loadRecurrence" class="waves-effect waves-light btn red darken-2">Ver Recurrencia</a>
                     </li>
                     <li>
                         <a id="executeCode" class="waves-effect waves-light btn">Ejecutar</a>

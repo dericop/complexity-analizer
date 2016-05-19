@@ -1,3 +1,5 @@
+var camiloEsgay = "camilo es regay";
+
 $(document).ready(function(){
 
     function Node(){}; // Definición de la estructura nodo
@@ -68,7 +70,6 @@ $(document).ready(function(){
         if (node == null)
             return 0
 
-        
         var that = this;
         node.children.forEach(function(item, index, arr){
             that.postOrder(item);
@@ -337,8 +338,10 @@ $(document).ready(function(){
 
     pk_ada.prototype.cleanCodeArea = function(){
         $("#canvas").empty();
-        pk_ada.currentNode = 0;
     }
+
+    pk_ada.prototype.traduction = "";
+    pk_ada.prototype.recurrence = "";
 
     pk_ada.prototype.drawNode = function(padre, variables){
         var varC = "";
@@ -397,8 +400,11 @@ $(document).ready(function(){
             // --------------------- Ejecución del código --------------------------------
             var code = editor.getValue();
             if (code != "") {
-                var translate = main(code);
-                eval(translate)
+                //this.traduction = main(code);
+                console.log(code);
+                //var translate = main(code);
+                //console.log(translate);
+                eval(code)
             }
 
             var windows = jsPlumb.getSelector(".window");
@@ -435,6 +441,23 @@ $(document).ready(function(){
         $('#modalLoadContent').openModal();
     })
 
+    $("#m_modalTranslate").click(function(){
+        /*
+            * Acción del botón que permite cargar algoritmos
+        */
+
+        $('#modalTranslate').openModal();
+        $('#javascript_modal').html(pk_ada.traduction);
+    })
+
+    $('#m_loadRecurrence').click(function(){
+        
+        $('#modalRecurrence').openModal();
+        $('#recurrence_modal').html(pk_ada.recurrence);
+    })
+
+
+
     $("#executeCode").click(function(){
         /*
             * Suceso de eventos al presionar el botón de ejecución del código
@@ -447,6 +470,7 @@ $(document).ready(function(){
         pk_ada.tree.calculateInitialX(pk_ada.tree.root);
         pk_ada.tree.calculateFinalPositions(pk_ada.tree.root, 0);
         //$("#chartWindow7").css({"left":"10em;"});
+        console.log(pk_ada.tree)
     })
 
     $(".loadN").click(function(event){
