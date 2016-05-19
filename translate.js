@@ -13,7 +13,7 @@ pseudocode =
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "		call hanoi(n-1,auxiliar,origen,destino)\n"+
 "	end\n"+
-"end"+
+"end\n"+
 "hanoiiii(n,origen,auxiliar,destino)\n"+
 "begin\n"+
 "	arreglo10[20]\n"+
@@ -241,17 +241,31 @@ function test_and_get_line(line){
 	}
 	return line
 }
-function add_params_to_execute(final_javascript){
+function get_last_function(final_javascript){
 	var functions = final_javascript.match(/function\s[a-z]+\(.*\)\n\s*\{/g)
-	console.log(functions)
-	if (functions.length>0) {
-		new_function=functions[functions.length-1];
-		new_function=new_function.replace(')',',padre)')
-		new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
-		final_javascript=final_javascript.replace(functions[functions.length-1],new_function)
-	}
-	console.log(final_javascript)
+	return functions[functions.length-1]
 }
+function add_params_to_execute(final_javascript){
+	last_function= get_last_function(final_javascript)
+	new_function=last_function
+	new_function=new_function.replace(')',',padre)')
+	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
+	final_javascript=final_javascript.replace(last_function,new_function)
+	return final_javascript
+}
+function get_recurrence(variables,final_javascript){
+	last_function = get_last_function(final_javascript)
+	left_part = "T("
+	for (var i = 0; i < variables.length; i++) {
+		if (i>0) {
+			left_part+=","
+		}
+		left_part+=variables[i]
+	}
+	left_part+=") = "
+	console.log(left_part)
+}
+
 function main(pseudocode){
 	console.log(pseudocode)
 	console.log("----------")
@@ -262,6 +276,7 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
-	add_params_to_execute(new_code)
+	get_recurrence(["origen","auxiliar","n","destino"],new_code)
+	new_code=add_params_to_execute(new_code)
 }
 main(pseudocode)
