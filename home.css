@@ -12,6 +12,7 @@ nav{
 }
 
 
+
 #canvas{
     height: 630px;
 }
@@ -96,6 +97,7 @@ nav{
     -webkit-box-shadow: 2px 2px 19px #444;
     -moz-box-shadow: 2px 2px 19px #fff;
     opacity:0.9;
+    background-color: #d9d9d9;
 }
 
 path, .jsplumb-endpoint { cursor:pointer; }

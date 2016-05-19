@@ -12,10 +12,15 @@
         <link rel="stylesheet" href="css/materialize.min.css">
         <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
         <link rel="stylesheet" href="home.css">
+
+        <script src="lib/jquery-1.12.3.min.js"></script>
+        <script src="lib/materialize.min.js"></script>
+        <script src="logic.js"></script>
+        <script src="translate.js"></script>
         
     </head>
     <body data-demo-id="chart" data-library="dom">
-
+            
           <!-- Modal Structure -->
           <div id="modalLoadContent" class="modal bottom-sheet">
             <div class="modal-content">
@@ -38,6 +43,9 @@
                   <a href="#" class="title_code">ANALIZADOR DE ALGORITMOS RECURSIVOS</a>
                   <ul id="nav-mobile" class="right hide-on-med-and-down">
                     <li>
+                        <a id="" class="waves-effect waves-light btn red darken-1">Traducción</a>
+                    </li>
+                    <li>
                         <a id="m_loadModalContent" class="waves-effect waves-light btn green darken-1">Cargar</a>
                     </li>
                     <li>
@@ -58,7 +66,7 @@
                 </div>
 
                 <div class="col s7">
-
+                    
                     <h6>
                         ÁRBOL DE EJECUCIÓN
                     </h6>
@@ -68,31 +76,30 @@
                 <div id="code" class="col s5">
                     
                     <div id="editor"></div>
+                    <div id="editorPascal"></div>
 
                 </pre>
                 </div>
                 <div class="col s7">
                      <div class="jtk-demo-canvas canvas-wide chart-demo jtk-surface jtk-surface-nopan" id="canvas">
                         <!--<div class="window" id="chartWindow1">n = 16</div> -->
-                        
+                        <div class="miniview"></div>
                         
                     </div>
                 </div>
             </div>
-           
-       
-           
-           
     
 
         <!-- JS -->
         <script src="lib/ace.js" type="text/javascript" charset="utf-8"></script>
         <script src="lib/theme-monokai.js" type="text/javascript" charset="utf-8"></script>
         <script src="lib/mode-javascript.js" type="text/javascript" charset="utf-8"></script>
+        <script src="lib/mode-pascal.js" type="text/javascript" charset="utf-8"></script>
         <script>
             var editor = ace.edit("editor");
             editor.setTheme("ace/theme/monokai");
-            editor.getSession().setMode("ace/mode/javascript");
+            editor.getSession().setMode("ace/mode/pascal");
+
         </script>
         <!-- support lib for bezier stuff -->
         <script src="lib/jsBezier-0.8.js"></script>
@@ -134,10 +141,7 @@
         <!-- /JS -->
 
 		
-        <script src="lib/jquery-1.12.3.min.js"></script>
-        <script src="lib/materialize.min.js"></script>
-        <script src="logic.js"></script>
-		<script src="translate.js"></script>
+        
 
     </body>
 </html>

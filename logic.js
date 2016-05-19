@@ -4,58 +4,85 @@ $(document).ready(function(){
     Node.prototype.id = -1;
     Node.prototype.x = 0;
     Node.prototype.y = 0;
+    Node.prototype.Mod = 0;
     Node.prototype.level = 1;
     Node.prototype.children = new Array();
     Node.prototype.father = null;
     Node.prototype.getPreviousSibling = function(){
-        if (this.father != null) {
-            for (var i = 0; i < this.father.children.length; i++) {
-                if (this.id == this.father.children[i].id) {
-                    if (i != 0) return this.father.children[i - 1];
-                    else this;
-                }   
-            }
-        }
+        if (this.father == null || this.isLeftMost())
+                return null;
+
+        return this.father.children[this.father.children.indexOf(this) - 1];
     }
     Node.prototype.isLeftMost = function(){
         if (this.father == null) return true
-        else{
-            for (var i = 0; i < this.father.children.length; i++) {
-                if (this.id == this.father.children[i].id) {
-                    if (i == 0) return true;
-                    else return false;
-                }   
-            }
-        } 
-        
+
+        return  (this.father.children[0] == this);
     }
     Node.prototype.addChild = function(node){
         this.children.push(node);
     }
+    Node.prototype.isLeaf = function(){
+        return this.children.length == 0;
+    }
+    Node.prototype.getLeftMostChild = function(){
+        if (this.children.length == 0)
+                return null;
+
+        return this.children[0];
+    }
+    Node.prototype.getRightMostChild = function(){
+        if (this.children.length == 0)
+                return null;
+
+        return this.children[this.children.length - 1];
+    }
+    Node.prototype.getLeftMostSibling = function(node){
+        if (this.father == null)
+                return null;
+
+        if (this.isLeftMost())
+            return this;
+
+        return this.father.children[0];
+    }
+
+    Node.prototype.isRightMost = function(){
+        if (this.father == null)
+                return true;
+
+        return this.father.children[this.father.children.length - 1] == this;
+    }
+
+    Node.prototype.getNextSibling = function(){
+         if (this.father == null || this.isRightMost())
+                return null;
+
+        return this.father.children[this.father.children.indexOf(this) + 1];
+    }
 
     function Tree(){}; // Definición de la estructura árbol
     Tree.prototype.root = null;
+    Tree.prototype.treeDistance = 0.0;
     Tree.prototype.postOrder = function(node){
         if (node == null)
             return 0
 
-        console.log(node);
+        
         var that = this;
         node.children.forEach(function(item, index, arr){
             that.postOrder(item);
         })
-
         this.calculateInitialX(node);
     }
+    
     Tree.prototype.addChildToNode = function(idNode, idFather){
 
         var node = new Node();
         node.id = idNode;
         node.children = new Array();
         var father = this.searchNode(idFather, this.root)
-        var level = this.searchLevel(idNode, this.root).level
         node.father = father;
-        node.level = level;
         father.addChild(node);
     }
     Tree.prototype.searchNode = function(idFather, node){
@@ -74,46 +101,204 @@ $(document).ready(function(){
         }
         return node;
     }
-    Tree.prototype.searchLevel = function(idNode, node){
-        var nodes = [];
-        var lvl = 1;
-        nodes.push(node);
-        while(nodes.length != 0){
-            var currentNode = nodes.shift();
-            if (currentNode.id == idNode){
-                currentNode.level = lvl; 
-                return currentNode
-            }
-            else{
-                lvl += 1;
-                currentNode.children.forEach(function(item, index, arr){
-                    nodes.push(item);
-                })
+    Tree.prototype.searchLevel = function(node, lvl){
+        if (node != null) {
+            node.level = lvl;
+            node.Y = node.level * 130;
+            var children = node.children;
+            for (var i = 0; i < children.length; i++) {
+                this.searchLevel(children[i], lvl+1);
             }
         }
-        return node;
+    }
+
+    Tree.prototype.getLeftContour = function(node, modSum, values){//values x ref
+        if (values[node.Y] == null)
+                values[node.Y] =  node.X + modSum;
+        else
+            values[node.Y] = Math.min(values[node.Y], node.X + modSum);
+
+        modSum += node.Mod;
+
+        that = this;
+        node.children.forEach(function(item, index, arr){
+            that.getLeftContour(item, modSum, values);
+        })
+    }
+
+    Tree.prototype.getRightContour = function(node, modSum, values){
+        if (values[node.Y] == null)
+            values[node.Y] = node.X + modSum;
+        else
+            values[node.Y] = Math.max(values[node.Y], node.X + modSum);
+
+        modSum += node.Mod;
+        that = this;
+        node.children.forEach(function(item, index, arr){
+            that.getRightContour(item, modSum, values);
+        })
     }
 
     Tree.prototype.calculateInitialX = function(node){
-        /*node.children.forEach(function(item, index, arr){
-            this.calculateInitialX(item);
-        })*/
+       
+       that = this;
+       node.children.forEach(function(item, index, arr){
+            that.calculateInitialX(item);
+       })
 
+       if (node.isLeaf()) {
+            if (!node.isLeftMost()) {
+                node.X = node.getPreviousSibling().X + 200
+            }else{
+                node.X = 0;
+            }
+       }
+
+       else if(node.children.length == 1){
+            if (node.isLeftMost())
+            {
+                node.X = node.children[0].X;
+            }
+            else
+            {
+                node.X = node.getPreviousSibling().X + 200;
+                node.Mod = node.X - node.children[0].X;
+            } 
+       }else {
+            var leftChild = node.getLeftMostChild();
+            var rightChild = node.getRightMostChild();
+            var mid = (leftChild.X + rightChild.X) / 2;
+
+            if (node.isLeftMost())
+            {
+                node.X = mid;
+            }
+            else
+            {
+                node.X = node.getPreviousSibling().X + 200;
+                node.Mod = node.X - mid;
+            }
+
+       }
+
+        if (node.children.length > 0 && !node.isLeftMost())
+        {
+            this.checkForConflicts(node);
+        }
+
+       /*
+        var posX = 0;
+        var posY = node.Y+"px";
         if (!node.isLeftMost()){
             node.X = node.getPreviousSibling().x + 200;
-            if (node.Y == null) node.Y = 60;
-            else node.Y = node.Y + 60;
-            var posX = node.X+"px";
-            var posY = node.Y+"px";
-            document.getElementById("chartWindow"+node.id).style.left = posX;
-            document.getElementById("chartWindow"+node.id).style.top = posX;
-
-            //$("#chartWindow7").css({"left":"50em;"});
-            pk_ada.instance.repaintEverything();
+            posX = node.X+"px";
             
         }else
             node.X = 0;
-            node.Y = 0;
+
+        */
+        document.getElementById("chartWindow"+node.id).style.left = node.X+"px";
+        document.getElementById("chartWindow"+node.id).style.top = node.Y+"px";
+        pk_ada.instance.repaintEverything();
+    
+    }
+
+
+    Tree.prototype.checkForConflicts = function(node){
+        var minDistance = this.treeDistance + 70;
+        var shiftValue = 0;
+        var nodeContour = {};
+        this.getLeftContour(node, 0, nodeContour);
+
+        var sibling = node.getLeftMostSibling();
+        while(sibling != null && sibling != node){
+            var siblingContour = {};
+            this.getRightContour(sibling, 0, siblingContour);
+
+            var maxSiblingContour = Math.max.apply(null, Object.keys(siblingContour));
+            var maxNodeContour = Math.max.apply(null, Object.keys(nodeContour));
+
+            for (var level = node.level + 1; level <= Math.min(maxSiblingContour, maxNodeContour); level++)
+                {
+                    var distance = nodeContour[level] - siblingContour[level];
+                    if (distance + shiftValue < minDistance)
+                    {
+                        shiftValue = minDistance - distance;
+                    }
+                }
+ 
+                if (shiftValue > 0)
+                {
+                    node.X += shiftValue;
+                    node.Mod += shiftValue;
+
+                    this.centerNodesBetween(node, sibling);
+                    shiftValue = 0;
+                }
+ 
+                sibling = sibling.getNextSibling();
+        }
+    }
+
+    Tree.prototype.centerNodesBetween = function(leftNode, rightNode){
+        var leftIndex = leftNode.father.children.indexOf(rightNode);
+        var rightIndex = leftNode.father.children.indexOf(leftNode);
+                
+        var numNodesBetween = (rightIndex - leftIndex) - 1;
+
+        if (numNodesBetween > 0)
+        {
+            var distanceBetweenNodes = (leftNode.X - rightNode.X) / (numNodesBetween + 1);
+
+            var count = 1;
+            for (var i = leftIndex + 1; i < rightIndex; i++)
+            {
+                var middleNode = leftNode.father.children[i];
+
+                var desiredX = rightNode.X + (distanceBetweenNodes * count);
+                var offset = desiredX - middleNode.X;
+                middleNode.X += offset;
+                middleNode.Mod += offset;
+
+                count++;
+            }
+
+            this.checkForConflicts(leftNode);
+        }
+    }
+
+    Tree.prototype.checkAllChildrenOnScreen = function(node)
+        {
+            var nodeContour = {};
+            this.getLeftContour(node, 0, nodeContour);
+
+            var shiftAmount = 0;
+            Object.keys(dictionary).forEach(function(item, index, arr){
+                if (nodeContour[item] + shiftAmount < 0) {
+                    shiftAmount = (nodeContour[item] * -1);
+                };
+            })
+
+            if (shiftAmount > 0) {
+                node.X += shiftAmount;
+                node.Mod += shiftAmount;
+
+            };
+
+        }
+
+    Tree.prototype.calculateFinalPositions = function(node, modSum){
+        node.X += modSum;
+        modSum += node.Mod;
+
+        that = this;
+        node.children.forEach(function(item, index, arr){
+            that.calculateFinalPositions(item, modSum);
+        })
+
+        document.getElementById("chartWindow"+node.id).style.left = node.X+"px";
+        document.getElementById("chartWindow"+node.id).style.top = node.Y+"px";
+        pk_ada.instance.repaintEverything();
     }
 
 
@@ -123,7 +308,7 @@ $(document).ready(function(){
                 // notice the 'curviness' argument to this Bezier curve.  the curves on this page are far smoother
                 // than the curves on the first demo, which use the default curviness value.
                 Connector: [ "Bezier", { curviness: 50 } ],
-                DragOptions: { cursor: "pointer", zIndex: 2000 },
+                DragOptions: { cursor: 'pointer', zIndex: 2000 },
                 PaintStyle: { strokeStyle: "blue", lineWidth: 2 },
                 EndpointStyle: { radius: 9, fillStyle: "blue" },
                 HoverPaintStyle: {strokeStyle: "#ec9f2e" },
@@ -143,6 +328,8 @@ $(document).ready(function(){
         */
         this.tree = new Tree();
         $('#modalLoadContent').openModal();
+        $('.tooltipped').tooltip({delay: 50});
+        this.instance.draggable(jsPlumb.getSelector(".chart-demo .window"), { grid: [20, 20] });
     };
 
     pk_ada.prototype.cleanCodeArea = function(){
@@ -150,11 +337,17 @@ $(document).ready(function(){
         pk_ada.currentNode = 0;
     }
 
-    pk_ada.prototype.drawNode = function(padre){
+    pk_ada.prototype.drawNode = function(padre, variables){
+        var varC = "";
+        if (variables != null) {
+            for(var i=0; i< variables.length;i++){
+                varC += variables[i].name + " = "+ variables[i].result +". ";
+            }
+        };
 
         pk_ada.currentNode += 1;
 
-        $("#canvas").append("<div class='window' id='chartWindow"+pk_ada.currentNode+"'>"+pk_ada.currentNode+"</div");
+        $("#canvas").append("<a class='window btn tooltipped' data-position='right' data-delay='50' data-tooltip='"+ varC + "' id='chartWindow"+pk_ada.currentNode+"'>"+pk_ada.currentNode+"</a");
         var node = $("#chartWindow"+pk_ada.currentNode)[0];
         
         pk_ada.instance.addEndpoint(node, {
@@ -183,6 +376,7 @@ $(document).ready(function(){
             var node = new Node();
             node.id = this.currentNode;
             node.children = new Array();
+            node.level = 1;
             this.tree.root = node;
         }
 
@@ -204,6 +398,16 @@ $(document).ready(function(){
 
             var windows = jsPlumb.getSelector(".window");
             pk_ada.instance.draggable(windows);
+            jsPlumb.setContainer("canvas");
+            $("#canvas").css({
+              "-webkit-transform":"scale(1)",
+              "-moz-transform":"scale(1)",
+              "-ms-transform":"scale(1)",
+              "-o-transform":"scale(1)",
+              "transform":"scale(1)"
+            });
+
+            jsPlumb.setZoom(1);
             
             
             jsPlumb.fire("jsPlumbDemoLoaded", pk_ada.instance);
@@ -232,7 +436,11 @@ $(document).ready(function(){
         */
         pk_ada.cleanCodeArea();
         pk_ada.executeCode();
-        pk_ada.tree.postOrder(pk_ada.tree.root);
+        $('.tooltipped').tooltip({delay: 50});
+        pk_ada.tree.searchLevel(pk_ada.tree.root, 1);
+        //pk_ada.tree.postOrder(pk_ada.tree.root);
+        pk_ada.tree.calculateInitialX(pk_ada.tree.root);
+        pk_ada.tree.calculateFinalPositions(pk_ada.tree.root, 0);
         console.log(pk_ada.tree);
         //$("#chartWindow7").css({"left":"10em;"});
 
