@@ -1,4 +1,4 @@
-var camiloEsgay = "camilo es regay";
+var padre = 1;
 
 $(document).ready(function(){
 
@@ -400,11 +400,11 @@ $(document).ready(function(){
             // --------------------- Ejecución del código --------------------------------
             var code = editor.getValue();
             if (code != "") {
-                //this.traduction = main(code);
+                this.traduction = main(code);
                 console.log(code);
                 //var translate = main(code);
                 //console.log(translate);
-                eval(code)
+                eval(this.traduction)
             }
 
             var windows = jsPlumb.getSelector(".window");
