@@ -39,7 +39,7 @@ function first_replace(pseudocode){
 	newlines=translate_false(newlines)
 	newlines=translate_null(newlines)
 	newlines=translate_until(newlines)
-	newlines=translate_for(newlines)
+	//newlines=translate_for(newlines)
 	newlines=remove_then(newlines)
 	newlines=translate_subarray(newlines)
 	newlines=translate_array_length(newlines)
