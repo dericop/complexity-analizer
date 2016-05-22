@@ -185,7 +185,6 @@ function translate_for(pseudocode){
 				symbol='<='
 			}else{
 				if(array_for[1].indexOf("DOWNTO")>=0){
-					alert("aca estoy")
 					array= array_for[1].split("DOWNTO")
 					change= '-='
 					symbol='>='
@@ -198,7 +197,6 @@ function translate_for(pseudocode){
 			pseudocode=pseudocode.replace(for_sentence[i],new_line)
 		}
 	return pseudocode
-
 }
 function translate_array_length(pseudocode){
 	var array_of_length = pseudocode.match(/[^a-zA-Z]length\([a-z]+[0-9]*\)/g)
@@ -296,7 +294,7 @@ function test_and_get_line(line){
 	}
 	return line
 }
-function get_last_function(final_javascript){
+function principal_function(final_javascript){
 	var functions = final_javascript.match(/function\s[a-z]+\(.*\)\n\s*\{/g)
 	return functions[functions.length-1]
 }
@@ -306,7 +304,7 @@ function get_function__calls(final_javascript,principal){
 	return calls
 }
 function add_params_to_execute(final_javascript){
-	last_function= get_last_function(final_javascript)
+	last_function= principal_function(final_javascript)
 	new_function=last_function
 	new_function=new_function.replace('(','(padre,')
 	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
@@ -321,22 +319,9 @@ function add_params_to_execute(final_javascript){
     }
 	return final_javascript
 }
-function get_recurrence(variables,final_javascript){
-	last_function = get_last_function(final_javascript)
-	left_part = "T("
-	for (var i = 0; i < variables.length; i++) {
-		if (i>0) {
-			left_part+=","
-		}
-		left_part+=variables[i]
-	}
-
-	left_part+=") = " 
-}
-
 function main(pseudocode){
-	console.log(pseudocode)
-	console.log("----------")
+	//console.log(pseudocode)
+	//console.log("----------")
 	var replace = first_replace(pseudocode)
 	var lines = replace.split("\n")
 	var new_code = ""
@@ -345,10 +330,9 @@ function main(pseudocode){
 		new_code += newline+"\n"
 	}
 
-	get_recurrence(["origen","auxiliar","n","destino"],new_code)
+	//get_recurrence(["origen","auxiliar","n","destino"],new_code)
 	new_code = add_params_to_execute(new_code)
-	console.log(new_code)
+	//console.log(new_code)
 	return new_code;
-
 }
 main(pseudocode)

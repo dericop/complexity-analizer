@@ -33,7 +33,7 @@ var algorithms = [
 
 
 
-function getAlgorithmsWithSameCallLength(algorithms,algorithm){
+function getAlgorithmsWithSameCallLength(algorithm){
     var filterAlgorithms = [];
     for (var i = 0; i < algorithms.length; i++) {
         if (algorithms[i].llamados_recursivos.length === algorithm.llamados_recursivos.length) 
@@ -42,7 +42,7 @@ function getAlgorithmsWithSameCallLength(algorithms,algorithm){
     return filterAlgorithms;
 };
 
-function getAlgorithmsWithSameInputsSize(algorithms,algorithm){
+function getAlgorithmsWithSameInputsSize(algorithm){
     var filterAlgorithms = [];
     for (var i = 0; i < algorithms.length; i++) {
         var inputSize = algorithm.llamados_recursivos;
@@ -58,11 +58,29 @@ function getAlgorithmsWithSameInputsSize(algorithms,algorithm){
     }
     return filterAlgorithms;
 };
-getOrder(this.algorithms,{"llamados_recursivos": ["n-1","n-2"],
-                          "costo_ambiente" : "1"});
-function getOrder(algorithms,algorithm){
+/*getOrder(this.algorithms,{"llamados_recursivos": ["n-1","n-2"],
+                          "costo_ambiente" : "1"});*/
+function getOrder(algorithm){
     var filterAlgorithms = [];
     filterAlgorithms=getAlgorithmsWithSameCallLength(algorithms,algorithm); 
     filterAlgorithms=getAlgorithmsWithSameInputsSize(filterAlgorithms,algorithm); 
     console.log(filterAlgorithms);
 };
+
+function get_recurrence(variables,final_javascript){
+    last_function = principal_function(final_javascript)
+    left_part = "T("
+    for (var i = 0; i < variables.length; i++) {
+        if (i>0) {
+            left_part+=","
+        }
+        left_part+=variables[i]
+    }
+
+    left_part+=") = " 
+}
+
+
+var Fraction = algebra.Fraction;
+var frac = new Fraction(1, 2);
+console.log(frac.toString());
