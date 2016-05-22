@@ -1,97 +1,104 @@
-
-
-
-
-
 //TORRES DE HANOI
-/*pseudocode = 
-"hanoi(n,origen,auxiliar,destino)\n"+
-"begin\n"+
-"	if(n = 1)then\n"+
-"	begin\n"+
-"		print('mover disco del '+ origen +'al '+destino)\n"+
-"	end\n"+
-"	else\n"+
-"	begin\n"+
-"		call hanoi(n-1,origen,destino,auxiliar)\n"+
-"		print('mover disco del '+ origen +'al '+destino)\n"+
-"		call hanoi(n-1,auxiliar,origen,destino)\n"+
-"	end\n"+
-"end"*/
+
+hanoi(n,origen,auxiliar,destino)
+begin
+	if(n = 1)then
+	begin
+		print('mover disco del '+ origen +'al '+destino)
+	end
+	else
+	begin
+		call hanoi(n-1,origen,destino,auxiliar)
+		print('mover disco del '+ origen +'al '+destino)
+		call hanoi(n-1,auxiliar,origen,destino)
+	end
+end
+hanoi(5, 'o', 'a', 'd')
 
 
 
 
 // BUSQUEDA BINARIA RECURSIVA
-/*pseudocode = 
-"bbr(a[],x,liminf,limsup)\n"+
-"begin\n"+
-"	pos?-1\n"+
-"	if(limsup = liminf)then\n"+
-"	begin\n"+
-"		mitad?(limsup+liminf)/2\n"+
-"		if(a[mitad] = x)then\n"+
-"		begin\n"+
-"			pos?mitad\n"+
-"		end\n"+
-"		else\n"+
-"		begin\n"+
-"			if(a[mitad] > x)then\n"+
-"			begin\n"+
-"				pos?bbr(a,x,liminf,mitad-1)\n"+
-"			end\n"+
-"			else\n"+
-"			begin\n"+
-"				pos?bbr(a,x,mitad+1,limsup-1)\n"+
-"			end\n"+
-"		end\n"+
-"	end\n"+
-"	?pos\n"+
-"end*/
+
+bbr(a[],x,liminf,limsup)
+begin
+	pos←1
+	if(limsup > liminf)then
+	begin
+		mitad←(limsup+liminf)/2
+		if(a[mitad] = x)then
+		begin
+			pos←mitad
+		end
+		else
+		begin
+			if(a[mitad] > x)then
+			begin
+				pos←bbr(a,x,liminf,mitad-1)
+			end
+			else
+			begin
+				pos←bbr(a,x,mitad+1,limsup-1)
+			end
+		end
+	end
+	↑pos
+end
+
+bbr([1,4,6,7,8,9],8,0,5)
 
 
 
 
 //FACTORIAL
-/*pseudocode = 
-"fatorial(n)\n"+
-"begin\n"+
-"	f?0\n"+
-"	if((n=0) or (n=1))then\n"+
-"	begin\n"+
-"		f?1\n"+
-"	end\n"+
-"	else\n"+
-"		begin\n"+
-"			f?n*(call factorial(n-1)\n"+
-"		end\n"+
-"	?f\n"+
-"end"*/
+
+factorial(n)
+begin
+	f←0
+	if((n=0) or (n=1))then
+	begin
+		f←1
+	end
+	else
+		begin
+			f←n*(call factorial(n-1))
+		end
+	↑f
+end
+
+factorial(20)
+
+
+
+
+
+
+
 
 
 
 
 //PRUEBA INICIAL
 /*pseudocode = 
-"x?0\n"+
-"y?'cadena'\n"+
-"z?T\n"+
-"v?F\n"+
-"?esto es un comentario\n"+
+"x←0\n"+
+"y←'cadena'\n"+
+"z←T\n"+
+"v←F\n"+
+"←esto es un comentario\n"+
 "diccionario{'a':'aksjhd','b':2,2:'skjd'}\n"+
 "funcion1( a , sa[] )\n"+
 "begin\n"+
-"	variable?'camilo'\n"+
+"	variable←'camilo'\n"+
 "end\n"+
-"rutina1(param0,param1,arreglo[10][11][2])?comentariooooooooo\n"+
+"rutina1(param0,param1,arreglo[10][11][2])←comentariooooooooo\n"+
 "begin\n"+
 "	arreglo10[20]\n"+
-"	param1?arreglo[2][3]\n"+
-"	for param0?9 to length(arreglo[1..param1]) do\n"+
+"	param1←arreglo[2][3]\n"+
+"	for param0←9 to length(arreglo[1..param1]) do\n"+
 "	begin\n"+
 "		if(param0<param1 and not(param1))then\n"+
 "		begin\n"+
-"			param0?param1\n"+
+"			param0←param1\n"+
 "			arreglo10[20]\n"+
 "		end\n"+
 "	end\n"+
@@ -99,41 +106,41 @@
 "	begin\n"+
 "		if(param0<param1 and not(param1))then\n"+
 "		begin\n"+
-"			param0?not(param1)\n"+
+"			param0←not(param1)\n"+
 "		end\n"+
 "	end\n"+
-"	tama�o?length(arreglo2)\n"+
-"	arreglo?NULL\n"+
+"	tamaño←length(arreglo2)\n"+
+"	arreglo←NULL\n"+
 "	repeat\n"+
 "		if(param0<param1 and not(param1))then\n"+
 "		begin\n"+
-"			param0?param1 \n"+
+"			param0←param1 \n"+
 "		end\n"+
 "		else\n"+
 "			begin\n"+
-"				param1?param0\n"+
+"				param1←param0\n"+
 "			end\n"+
 "	until(param0<param1 and param1<2 or param2>3)\n"+
-"	nuevoarreglo?arreglo[1..param1]\n"+
-"	modulo?param0 mod param1\n"+
+"	nuevoarreglo←arreglo[1..param1]\n"+
+"	modulo←param0 mod param1\n"+
 "	call rutina2(param0,param1,nuevoarreglo)\n"+
 "end\n"+
-"rutina2(param0,param1,arreglo[10][11][2])?comentariooooooooo\n"+
+"rutina2(param0,param1,arreglo[10][11][2])←comentariooooooooo\n"+
 "begin\n"+
-	"?esto es un comentario\n"+
+	"←esto es un comentario\n"+
 	"arreglo30[20]\n"+
-	"param1?arreglo[2][3]\n"+
-	"for param0?9 to ?param1? do\n"+
+	"param1←arreglo[2][3]\n"+
+	"for param0←9 to ←param1← do\n"+
 	"begin\n"+
 	"	if(param0<param1 and not(param1))then\n"+
 	"	begin\n"+
-	"		param0?param1\n"+
+	"		param0←param1\n"+
 	"	end\n"+
-		"for param0?F to ?((param1+(?param1?))? do\n"+
+		"for param0←F to ←((param1+(←param1←))← do\n"+
 		"begin\n"+
 		"	if(param0<param1 and not(param1))then\n"+
 		"	begin\n"+
-		"		param0? ?param1?\n"+
+		"		param0← ←param1←\n"+
 		"	end\n"+
 		"end\n"+
 	"end\n"+
@@ -141,29 +148,29 @@
 	"begin\n"+
 	"	if(param0<param1 or not(param1))then\n"+
 	"	begin\n"+
-	"		param0?param1\n"+
+	"		param0←param1\n"+
 	"	end\n"+
 	"end\n"+
-	"tama�o?length(arreglo2)\n"+
+	"tamaño←length(arreglo2)\n"+
 	"repeat\n"+
 	"	if(not(not(param0<param1) and not(param1)))then\n"+
 	"	begin\n"+
-	"		param0?param1\n"+
+	"		param0←param1\n"+
 	"	end\n"+
 	"	else\n"+
 	"		begin\n"+
 	"		if(T)then\n"+
 	"		begin\n"+
-	"			param1?'camilo'\n"+
+	"			param1←'camilo'\n"+
 	"		end\n"+
-	"		if(param1?T and param2?F or NULL)then\n"+
+	"		if(param1←T and param2←F or NULL)then\n"+
 	"		begin\n"+
-	"			param1?param0\n"+
+	"			param1←param0\n"+
 	"		end\n"+
-	"		param1?param0\n"+
+	"		param1←param0\n"+
 	"	end\n"+
 	"until(param0<param1 and param1<2 or param2>3)\n"+
-	"nuevoarreglo?arreglo[1..param1]\n"+
-	"modulo?param0 mod param1\n"+
+	"nuevoarreglo←arreglo[1..param1]\n"+
+	"modulo←param0 mod param1\n"+
 "end\n"+
 "call rutina1(x,y,z,v)"*/

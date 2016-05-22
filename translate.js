@@ -232,7 +232,8 @@ function get_last_function(final_javascript){
 	return functions[functions.length-1]
 }
 function get_function__calls(final_javascript,principal){
-	var calls = final_javascript.match(/\s*hanoi\s*\(.*\)/g)
+	//var calls = final_javascript.match(/\s*hanoi\s*\(.*\)/g)
+	var calls = final_javascript.match(new RegExp('\\s*'+principal+'\\s*\(.*\)','g'))
 	return calls
 }
 function add_params_to_execute(final_javascript){
