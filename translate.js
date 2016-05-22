@@ -7,16 +7,54 @@ pseudocode =
 "	begin\n"+
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "	end\n"+
+"	for x = 1 to 10 UPTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 DOWNTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
 "	else\n"+
 "	begin\n"+
 "		call hanoi(n-1,origen,destino,auxiliar)\n"+
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "		call hanoi(n-1,auxiliar,origen,destino)\n"+
 "	end\n"+
+"end"+
+"hanoiiii(n,origen,auxiliar,destino)\n"+
+"begin\n"+
+"	arreglo10[20]\n"+
+"	if(n = 1)then\n"+
+"	begin\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 UPTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 DOWNTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	else\n"+
+"	begin\n"+
+"		call hanoiiii(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
 "end"
 
 
-var array_functions= ['if','while','for','floor','ceil','length','slice','Uint8Array','print'];
+var array_functions= ['if','while','for','floor','ceil','length','slice','Uint8Array','print','DOWNTO','UPTO'];
 function first_replace(pseudocode){
 	newlines=remove_do(pseudocode)
 	newlines=translate_repeat(newlines)
@@ -39,7 +77,7 @@ function first_replace(pseudocode){
 	newlines=translate_false(newlines)
 	newlines=translate_null(newlines)
 	newlines=translate_until(newlines)
-	//newlines=translate_for(newlines)
+	newlines=translate_for(newlines)
 	newlines=remove_then(newlines)
 	newlines=translate_subarray(newlines)
 	newlines=translate_array_length(newlines)
@@ -133,7 +171,33 @@ function translate_until(pseudocode){
 	return pseudocode.replace(new RegExp('\\b' + 'until' + '\\b','g'),"while")
 }
 function translate_for(pseudocode){
-	var for_sentence = pseudocode.match(/\s*hanoi\s*\(.*\)/g)
+	var for_sentence = pseudocode.match(/\s+for\s+.*/g)
+		for (var i = 0; i<for_sentence.length; i++) {
+			array_for= for_sentence[i].split("to")
+			array= []
+			inf_limit = array_for[0].split("for")[1]
+			variable = inf_limit.split("=")[0]
+			change = ""
+			symbol = ""
+			if (array_for[1].indexOf("UPTO")>=0) {
+				array= array_for[1].split("UPTO")
+				change= '+='
+				symbol='<='
+			}else{
+				if(array_for[1].indexOf("DOWNTO")>=0){
+					alert("aca estoy")
+					array= array_for[1].split("DOWNTO")
+					change= '-='
+					symbol='>='
+				}
+			}	
+			sup_limit = array[0]
+			change += array[1]
+
+			new_line = array_for[0].split("for")[0]+"for ("+inf_limit+";"+variable+" "+symbol+" "+sup_limit+";"+variable+" "+change+")"
+			pseudocode=pseudocode.replace(for_sentence[i],new_line)
+		}
+	return pseudocode
 
 }
 function translate_array_length(pseudocode){
