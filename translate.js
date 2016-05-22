@@ -39,6 +39,7 @@ function first_replace(pseudocode){
 	newlines=translate_false(newlines)
 	newlines=translate_null(newlines)
 	newlines=translate_until(newlines)
+	newlines=translate_for(newlines)
 	newlines=remove_then(newlines)
 	newlines=translate_subarray(newlines)
 	newlines=translate_array_length(newlines)
@@ -130,6 +131,10 @@ function translate_null(pseudocode){
 function translate_until(pseudocode){
 
 	return pseudocode.replace(new RegExp('\\b' + 'until' + '\\b','g'),"while")
+}
+function translate_for(pseudocode){
+	var for_sentence = pseudocode.match(/\s*hanoi\s*\(.*\)/g)
+
 }
 function translate_array_length(pseudocode){
 	var array_of_length = pseudocode.match(/[^a-zA-Z]length\([a-z]+[0-9]*\)/g)
@@ -262,7 +267,6 @@ function get_recurrence(variables,final_javascript){
 	}
 
 	left_part+=") = " 
-
 }
 
 function main(pseudocode){
