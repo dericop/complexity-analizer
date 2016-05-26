@@ -306,12 +306,14 @@ function translate_for(pseudocode){
 function translate_init_array(pseudocode){
 
 	arrays= pseudocode.match(/\s*[a-zA-Z]+\[.*\]\s*\n/g)
-	for (var i = 0; i < arrays.length; i++) {
-		if (arrays[i].indexOf("=")===-1) {
-			new_line = arrays[i].replace(new RegExp('\\[.*\\]','g'),"=[]")
-			pseudocode=pseudocode.replace(arrays[i],new_line)
+	if (arrays != null) {
+		for (var i = 0; i < arrays.length; i++) {
+			if (arrays[i].indexOf("=")===-1) {
+				new_line = arrays[i].replace(new RegExp('\\[.*\\]','g'),"=[]")
+				pseudocode=pseudocode.replace(arrays[i],new_line)
+			}
 		}
-	}
+	};
 	return pseudocode
 }
 function translate_array_length(pseudocode){
@@ -366,7 +368,7 @@ function set_function_param(line){
 	return line
 }
 function translate_function_Sentence(pseudocode){
-	var all_functions = pseudocode.match(/[a-zA-Z]+[0-9]*\(.*\).*\n\{/g)
+	var all_functions = pseudocode.match(/[a-zA-Z_]+[0-9]*\(.*\).*\n\{/g)
 	if (all_functions!=null) {
 		for (var i = 0; i< all_functions.length ; i++) {
 			line = all_functions[i]

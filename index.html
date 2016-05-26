@@ -46,45 +46,7 @@
             <div class="modal-content">
               <h4>El código que has escrito se vería en javascript así: </h4>
               <p id="javascript_modal">
-                function translate_to_floor(pseudocode){
-                    pseudocode=pseudocode.replace(new RegExp('⌊','g'), 'Math.floor(')
-                    pseudocode=pseudocode.replace(new RegExp('⌋','g'), ')')
-                    return pseudocode
-                }
-                function translate_to_ceil(pseudocode){
-                    pseudocode=pseudocode.replace(new RegExp('⌈','g'), 'Math.ceil(')
-                    pseudocode=pseudocode.replace(new RegExp('⌉','g'), ')')
-                    return pseudocode
-                }
-                function set_function_param(line){
-                    params= ((line.split("(")[1]).split(")")[0]).split(",")
-                    for (var i = 0; i params.length ; i++) {
-                        if (params[i] !== "") {
-                            name_param = params[i].match(/^\s*[a-z]+[0-9]*/g)[0]
-                            line=line.replace(params[i],name_param)
-                        }
-                    }
-                    return line
-                } function translate_to_floor(pseudocode){
-                    pseudocode=pseudocode.replace(new RegExp('⌊','g'), 'Math.floor(')
-                    pseudocode=pseudocode.replace(new RegExp('⌋','g'), ')')
-                    return pseudocode
-                }
-                function translate_to_ceil(pseudocode){
-                    pseudocode=pseudocode.replace(new RegExp('⌈','g'), 'Math.ceil(')
-                    pseudocode=pseudocode.replace(new RegExp('⌉','g'), ')')
-                    return pseudocode
-                }
-                function set_function_param(line){
-                    params= ((line.split("(")[1]).split(")")[0]).split(",")
-                    for (var i = 0; i params.length ; i++) {
-                        if (params[i] !== "") {
-                            name_param = params[i].match(/^\s*[a-z]+[0-9]*/g)[0]
-                            line=line.replace(params[i],name_param)
-                        }
-                    }
-                    return line
-                }
+                
 
               </p>
             </div>

@@ -45,6 +45,7 @@ begin
 	↑pos
 end
 
+bbr([1, 2, 4, 5, 6, 8, 9, 20, 21, 23, 24, 25, 26, 27, 28, 29, 30, 60, 61, 62, 70, 71,78, 80, 90, 91, 92], 2, 0, 26 )
 
 
 //FACTORIAL
@@ -84,15 +85,15 @@ begin
 	begin
 		R[j]←A[q+j]
 	end
-	L[n1+1]←inf
-	R[n2+1]←inf
+	L[n1+1]←INF
+	R[n2+1]←INF
 	i←1
 	j←1
 	for k ← p to r UPTO(1) do
 	begin
-		if L[i] ≤ R[j] then
+		if (L[i] ≤ R[j]) then
 		begin
-			a[k]←L[i]
+			A[k]←L[i]
 			i←i+1
 		end
 		else
@@ -114,6 +115,7 @@ begin
 	end
 end
 
+merge_sort([4, 2, 1, 6, 7, 8, 5], 0, 6)
 
 
 
