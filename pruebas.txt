@@ -68,7 +68,7 @@ factorial(20)
 
 
 
-
+//MERGE SORT
 merge(A,p,q,r)
 begin
     n1←q-p
@@ -116,7 +116,29 @@ end
 merge_sort([4, 2, 1, 6, 7, 8, 5], 0, 6)
 
 
+//POTENCIA 
 
+potencia(x,n)
+begin
+  if (n = 0)
+  begin 
+    ↑1 
+  end
+  else
+  begin
+    if ((n mod 2) = 0)
+    begin
+        resp ← potencia(x, n/2)
+        ↑ resp * resp
+    end
+    else
+    begin
+        ↑ x * potencia(x, n-1)
+    end
+  end
+end
+
+potencia(2,4)
 
 
 

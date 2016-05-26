@@ -37,7 +37,7 @@ var algorithms = [
     }]
 
 function header_principal_function(final_javascript){
-    var functions = final_javascript.match(/function\s[a-z_]+\(.*\)\n\s*\{/g)
+    var functions = final_javascript.match(/function\s[a-zA-Z_][a-zA-Z0-9_]*\(.*\)\n\s*\{/g)
     console.log(functions);
     return functions[functions.length-1]
 }
