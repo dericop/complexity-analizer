@@ -38,7 +38,6 @@ var algorithms = [
 
 function header_principal_function(final_javascript){
     var functions = final_javascript.match(/function\s[a-zA-Z_][a-zA-Z0-9_]*\(.*\)\n\s*\{/g)
-    console.log(functions);
     return functions[functions.length-1]
 }
 function body_principal_function(principal_function){
@@ -65,10 +64,68 @@ function called_header_function_external(full_principal_function,header_principa
     }
     return array_name_external_functions
 }
-function get_efficiency(full_principal_function,params_from_user){
+/*function get_efficiency(full_principal_function,params_from_user){
     body= body_principal_function(full_principal_function)
     array_lines_boby = body.split("\n")
     console.log(body)
+}*/
+
+
+
+function remove_white_items(array){
+    arr = []
+    for (var i = 0; i < array.length; i++) {
+        if (array[i]!=="") {
+            arr.push(array[i])
+        };
+    };
+    return arr
+}
+
+function mapping_lines(final_javascript){
+    console.log(final_javascript)
+    console.log("----")
+    full_function = get_full_principal_function(final_javascript)
+    //full_function= full_function.replace(header_principal_function(final_javascript),"")
+    array_lines = full_function.split("\n")
+    array_lines.shift()
+    array_lines=remove_white_items(array_lines)
+    array_lines.pop()
+    console.log(array_lines)
+    dictionary_level = {}
+    levels = []
+    for (var i=0; i < array_lines.length; i++) {
+        if(array_lines[i].indexOf("{")!==-1){
+            levels.push(i)
+            eval(depth_dictionary(levels))
+        }else{
+            if(array_lines[i].indexOf("}")!==-1){
+                levels.pop()
+            }else{
+                if(array_lines[i].indexOf("")!==-1){
+                    eval(depth_insert_line(levels,i,array_lines[i]))
+                }
+            }
+        }
+    };
+    console.log(dictionary_level)
+}
+
+
+function depth_dictionary(levels){
+    string = "dictionary_level"
+    for (var i = 0; i < levels.length; i++) {
+        string+=".l"+levels[i]
+    };
+    return string+="={}"
+}
+function depth_insert_line(levels,num_line,line){
+    string = "dictionary_level"
+    for (var i = 0; i < levels.length; i++) {
+        string+=".l"+levels[i]
+    };
+    string +='.l'+num_line+' = "'+line+'"'
+    return string
 }
 
 

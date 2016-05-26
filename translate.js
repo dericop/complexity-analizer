@@ -148,6 +148,20 @@ pseudocode =
 "		merge_sort(A,q+1,r)\n"+
 "		merge(A,p,q,r)\n"+
 "	end\n"+
+"	if(p < r) then\n"+ 
+"	begin\n"+
+"		q←⌊(p+r)/2⌋\n"+
+"		merge_sort(A,p,q)\n"+
+"		merge_sort(A,q+1,r)\n"+
+"		merge(A,p,q,r)\n"+
+"		if(p < r) then\n"+ 
+"		begin\n"+
+"			q←⌊(p+r)/2⌋\n"+
+"			merge_sort(A,p,q)\n"+
+"			merge_sort(A,q+1,r)\n"+
+"			merge(A,p,q,r)\n"+
+"		end\n"+
+"	end\n"+
 "end\n"
 var array_functions= ['if','while','for','floor','ceil','length','slice','log','drawNode','Uint8Array','print','DOWNTO','UPTO'];
 function first_replace(pseudocode){
@@ -444,10 +458,11 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
+	mapping_lines(new_code)
 	new_code = add_params_to_execute(new_code)
 
-	console.log(new_code)
+	//console.log(new_code)
 	//get_efficiency(get_full_principal_function(new_code),['n','origen','auxiliar','destino'])
 	return new_code;
 }
-main(pseudocode)
+//main(pseudocode)

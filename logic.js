@@ -1,5 +1,4 @@
 var padre = 1;
-
 $(document).ready(function(){
 
     function Node(){}; // Definición de la estructura nodo
@@ -401,7 +400,7 @@ $(document).ready(function(){
             var code = editor.getValue();
             if (code != "") {
                 this.traduction = main(code);
-                console.log(code);
+                //console.log(code);
                 //var translate = main(code);
                 //console.log(translate);
                 eval(this.traduction)
