@@ -69,50 +69,48 @@ factorial(20)
 
 
 
-//MERGESORT
-
 merge(A,p,q,r)
 begin
-	n1←q-p+1
-	n2←r-q
-	L[n1+1]
-	R[n2+1]
-	for i ← 1 to n1 UPTO(1) do
-	begin
-		L[i]←A[p+i-1]
-	end
-	for j ← 1 to n1 UPTO(1) do
-	begin
-		R[j]←A[q+j]
-	end
-	L[n1+1]←INF
-	R[n2+1]←INF
-	i←1
-	j←1
-	for k ← p to r UPTO(1) do
-	begin
-		if (L[i] ≤ R[j]) then
-		begin
-			A[k]←L[i]
-			i←i+1
-		end
-		else
-		begin
-			A[k]←L[i]
-			j←j+1
-		end
-	end
+    n1←q-p
+    n2←r-q
+    L[n1+1]
+    R[n2+1]
+    for i ← 0 to n1 UPTO(1) do
+    begin
+        L[i]←A[p+i]
+    end
+    for j ← 0 to n2 UPTO(1) do
+    begin
+        R[j]←A[q+j]
+    end
+    L[n1+1]←INF
+    R[n2+1]←INF
+    i←0
+    j←0
+    for k ← p to r UPTO(1) do
+    begin
+    if (L[i] ≤ R[j]) then
+    begin
+        A[k]←L[i]
+        i←i+1
+    end
+    else
+    begin
+        A[k]←R[j]
+        j←j+1
+    end
+    end
 end
 
 merge_sort(A, p, r)
 begin
-	if(p < r) then 
-	begin
-		q←⌊(p+r)/2⌋
-		merge_sort(A,p,q)
-		merge_sort(A,q+1,r)
-		merge(A,p,q,r)
-	end
+    if(p < r) then 
+    begin
+        q←⌊(p+r)/2⌋
+        merge_sort(A,p,q)
+        merge_sort(A,q+1,r)
+        merge(A,p,q,r)
+    end
 end
 
 merge_sort([4, 2, 1, 6, 7, 8, 5], 0, 6)

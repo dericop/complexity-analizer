@@ -447,7 +447,7 @@ $(document).ready(function(){
         */
 
         $('#modalTranslate').openModal();
-        $('#javascript_modal').html(pk_ada.traduction);
+        $('#code_js').html(pk_ada.traduction);
     })
 
     $('#m_loadRecurrence').click(function(){
