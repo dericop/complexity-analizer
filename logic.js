@@ -520,7 +520,7 @@ $(document).ready(function(){
                 break;
             case "3": // Mergesort
                 break;
-            case "4": // Quicksort
+            case "4": // Quicksort 
                 break;
         }
 

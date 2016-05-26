@@ -1,4 +1,4 @@
-//TORRES DE HANOI
+/*//TORRES DE HANOI
 pseudocode = 
 "hanoi(n,origen,auxiliar,destino)\n"+
 "begin\n"+
@@ -25,7 +25,7 @@ pseudocode =
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "		call hanoi(n-1,auxiliar,origen,destino)\n"+
 "	end\n"+
-"end"+
+"end\n"+
 "hanoiiii(n,origen,auxiliar,destino)\n"+
 "begin\n"+
 "	arreglo10[20]\n"+
@@ -51,10 +51,105 @@ pseudocode =
 "		print('mover disco del '+ origen +'al '+destino)\n"+
 "		call hanoi(n-1,auxiliar,origen,destino)\n"+
 "	end\n"+
-"end"
+"end\n"
+pseudocode = 
+"hanoi(n,origen,auxiliar,destino)\n"+
+"begin\n"+
+"	arreglo10[20]\n"+
+"	if(n = 1)then\n"+
+"	begin\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 UPTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 DOWNTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	else\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"end\n"+
+"hanoiiii(n,origen,auxiliar,destino)\n"+
+"begin\n"+
+"	arreglo10[20]\n"+
+"	if(n = 1)then\n"+
+"	begin\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 UPTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	for x = 1 to 10 DOWNTO(1) do\n"+
+"	begin\n"+
+"		call hanoi(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"	else\n"+
+"	begin\n"+
+"		call hanoiiii(n-1,origen,destino,auxiliar)\n"+
+"		print('mover disco del '+ origen +'al '+destino)\n"+
+"		call hanoi(n-1,auxiliar,origen,destino)\n"+
+"	end\n"+
+"end\n"*/
 
-
-var array_functions= ['if','while','for','floor','ceil','length','slice','Uint8Array','print','DOWNTO','UPTO'];
+pseudocode = 
+"merge(A,p,q,r)\n"+
+"begin\n"+
+"	n1←q-p+1\n"+
+"	n2←r-q\n"+
+"	R[n2+1]\n"+
+"	L[n1+1]\n"+
+"	for i ← 1 to n1 UPTO(1) do\n"+
+"	begin\n"+
+"		L[i]←A[p+i-1]\n"+
+"	end\n"+
+"	for j ← 1 to n1 UPTO(1) do\n"+
+"	begin\n"+
+"		R[j]←A[q+j]\n"+
+"	end\n"+
+"	L[n1+1]←INF\n"+
+"	R[n2+1]←INF\n"+
+"	i←1\n"+
+"	j←1\n"+
+"	for k ← p to r UPTO(1) do\n"+
+"	begin\n"+
+"		if L[i] ≤ R[j] then\n"+
+"		begin\n"+
+"			a[k]←L[i]\n"+
+"			i←i+1\n"+
+"		end\n"+
+"		else\n"+
+"		begin\n"+
+"			A[k]←L[i]\n"+
+"			j←j+1\n"+
+"		end\n"+
+"	end\n"+
+"end\n"+
+"merge_sort(A, p, r)\n"+
+"begin\n"+
+"	if(p < r) then\n"+ 
+"	begin\n"+
+"		q←⌊(p+r)/2⌋\n"+
+"		merge_sort(A,p,q)\n"+
+"		merge_sort(A,q+1,r)\n"+
+"		merge(A,p,q,r)\n"+
+"	end\n"+
+"end\n"
+var array_functions= ['if','while','for','floor','ceil','length','slice','log','drawNode','Uint8Array','print','DOWNTO','UPTO'];
 function first_replace(pseudocode){
 	newlines=remove_do(pseudocode)
 	newlines=translate_repeat(newlines)
@@ -76,11 +171,13 @@ function first_replace(pseudocode){
 	newlines=translate_true(newlines)
 	newlines=translate_false(newlines)
 	newlines=translate_null(newlines)
+	newlines=translate_infinity(newlines)
 	newlines=translate_until(newlines)
 	newlines=translate_for(newlines)
 	newlines=remove_then(newlines)
 	newlines=translate_subarray(newlines)
 	newlines=translate_array_length(newlines)
+	newlines=translate_init_array(newlines)
 	newlines=translate_to_floor(newlines)
 	newlines=translate_to_ceil(newlines)
 	newlines=translate_function_Sentence(newlines)
@@ -138,6 +235,7 @@ function translate_end(pseudocode){
 
 	return pseudocode.replace(new RegExp('\\b' + 'end' + '\\b', "g"), "}")
 }
+
 function translate_mod(pseudocode){
 
 	return pseudocode.replace(new RegExp('\\b' + 'mod' + '\\b', "g"), "%")
@@ -166,36 +264,54 @@ function translate_null(pseudocode){
 
 	return pseudocode.replace(new RegExp('\\b' + 'NULL' + '\\b','g'),"null")
 }
+
+function translate_infinity(pseudocode){
+
+	return pseudocode.replace(new RegExp('\\b' + 'INF' + '\\b','g'),"Infinity")
+}
 function translate_until(pseudocode){
 
 	return pseudocode.replace(new RegExp('\\b' + 'until' + '\\b','g'),"while")
 }
 function translate_for(pseudocode){
 	var for_sentence = pseudocode.match(/\s+for\s+.*/g)
-		for (var i = 0; i<for_sentence.length; i++) {
-			array_for= for_sentence[i].split("to")
-			array= []
-			inf_limit = array_for[0].split("for")[1]
-			variable = inf_limit.split("=")[0]
-			change = ""
-			symbol = ""
-			if (array_for[1].indexOf("UPTO")>=0) {
-				array= array_for[1].split("UPTO")
-				change= '+='
-				symbol='<='
-			}else{
-				if(array_for[1].indexOf("DOWNTO")>=0){
-					array= array_for[1].split("DOWNTO")
-					change= '-='
-					symbol='>='
-				}
-			}	
-			sup_limit = array[0]
-			change += array[1]
+		if (for_sentence!== null &&for_sentence.length>0) {
+			for (var i = 0; i<for_sentence.length; i++) {
+				array_for= for_sentence[i].split("to")
+				array= []
+				inf_limit = array_for[0].split("for")[1]
+				variable = inf_limit.split("=")[0]
+				change = ""
+				symbol = ""
+				if (array_for[1].indexOf("UPTO")>=0) {
+					array= array_for[1].split("UPTO")
+					change= '+='
+					symbol='<='
+				}else{
+					if(array_for[1].indexOf("DOWNTO")>=0){
+						array= array_for[1].split("DOWNTO")
+						change= '-='
+						symbol='>='
+					}
+				}	
+				sup_limit = array[0]
+				change += array[1]
 
-			new_line = array_for[0].split("for")[0]+"for ("+inf_limit+";"+variable+" "+symbol+" "+sup_limit+";"+variable+" "+change+")"
-			pseudocode=pseudocode.replace(for_sentence[i],new_line)
+				new_line = array_for[0].split("for")[0]+"for ("+inf_limit+";"+variable+" "+symbol+" "+sup_limit+";"+variable+" "+change+")"
+				pseudocode=pseudocode.replace(for_sentence[i],new_line)
+			}
 		}
+	return pseudocode
+}
+function translate_init_array(pseudocode){
+
+	arrays= pseudocode.match(/\s*[a-zA-Z]+\[.*\]\s*\n/g)
+	for (var i = 0; i < arrays.length; i++) {
+		if (arrays[i].indexOf("=")===-1) {
+			new_line = arrays[i].replace(new RegExp('\\[.*\\]','g'),"=[]")
+			pseudocode=pseudocode.replace(arrays[i],new_line)
+		}
+	}
 	return pseudocode
 }
 function translate_array_length(pseudocode){
@@ -243,7 +359,7 @@ function set_function_param(line){
 	params= ((line.split("(")[1]).split(")")[0]).split(",")
 	for (var i = 0; i< params.length ; i++) {
 		if (params[i] !== "") {
-			name_param = params[i].match(/^\s*[a-z]+[0-9]*/g)[0]
+			name_param = params[i].match(/^\s*[a-zA-Z]+[0-9]*/g)[0]
 			line=line.replace(params[i],name_param)
 		}
 	}
@@ -294,17 +410,14 @@ function test_and_get_line(line){
 	}
 	return line
 }
-function principal_function(final_javascript){
-	var functions = final_javascript.match(/function\s[a-z]+\(.*\)\n\s*\{/g)
-	return functions[functions.length-1]
-}
+
 function get_function__calls(final_javascript,principal){
 	//var calls = final_javascript.match(/\s*hanoi\s*\(.*\)/g)
 	var calls = final_javascript.match(new RegExp('\\s*'+principal+'\\s*\(.*\)','g'))
 	return calls
 }
 function add_params_to_execute(final_javascript){
-	last_function= principal_function(final_javascript)
+	last_function=header_principal_function(final_javascript)
 	new_function=last_function
 	new_function=new_function.replace('(','(padre,')
 	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
@@ -329,10 +442,10 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
-
-	//get_recurrence(["origen","auxiliar","n","destino"],new_code)
 	new_code = add_params_to_execute(new_code)
-	//console.log(new_code)
+
+	console.log(new_code)
+	//get_efficiency(get_full_principal_function(new_code),['n','origen','auxiliar','destino'])
 	return new_code;
 }
 main(pseudocode)
