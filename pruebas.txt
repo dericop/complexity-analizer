@@ -1,16 +1,14 @@
 //TORRES DE HANOI
 
-hanoi(n,origen,auxiliar,destino)
+hanoi(n, origen, auxiliar, destino)
 begin
-	if(n = 1)then
+	if(n = 1) then
 	begin
-		print('mover disco del '+ origen +'al '+destino)
 	end
 	else
-	begin
-		call hanoi(n-1,origen,destino,auxiliar)
-		print('mover disco del '+ origen +'al '+destino)
-		call hanoi(n-1,auxiliar,origen,destino)
+        begin
+		call hanoi(n-1, origen, destino, auxiliar)
+		call hanoi(n-1, origen, destino, auxiliar)
 	end
 end
 hanoi(5, 'o', 'a', 'd')
@@ -23,16 +21,16 @@ hanoi(5, 'o', 'a', 'd')
 bbr(a[],x,liminf,limsup)
 begin
 	pos←1
-	if(limsup > liminf)then
+	if(limsup > liminf) then
 	begin
 		mitad←(limsup+liminf)/2
-		if(a[mitad] = x)then
+		if(a[mitad] = x) then
 		begin
 			pos←mitad
 		end
 		else
 		begin
-			if(a[mitad] > x)then
+			if(a[mitad] > x) then
 			begin
 				pos←bbr(a,x,liminf,mitad-1)
 			end
