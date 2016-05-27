@@ -65,13 +65,6 @@ function called_header_function_external(full_principal_function,header_principa
     }
     return array_name_external_functions
 }
-/*function get_efficiency(full_principal_function,params_from_user){
-    body= body_principal_function(full_principal_function)
-    array_lines_boby = body.split("\n")
-    console.log(body)
-}*/
-
-
 
 function remove_white_items(array){
     arr = []
@@ -85,8 +78,6 @@ function remove_white_items(array){
 }
 
 function mapping_lines(final_javascript){
-    //console.log(final_javascript)
-    //console.log("----")
     full_function = get_full_principal_function(final_javascript)
     //full_function= full_function.replace(header_principal_function(final_javascript),"")
     full_function = full_function.replace(new RegExp('else', 'g'), "")
@@ -94,7 +85,6 @@ function mapping_lines(final_javascript){
     array_lines.shift()
     array_lines=remove_white_items(array_lines)
     array_lines.pop()
-    //console.log(array_lines)
     dictionary_level = {}
     levels = []
     for (var i=0; i < array_lines.length; i++) {
@@ -150,12 +140,13 @@ function search_asig(route){
     return response
 }
 
-function replace_in(params,assigns){
+performace = []
+
+function replace_in(params,assigns,header_function){
     console.log(params)
     variables = Object.keys(assigns).reverse()
     for (var i = 0; i < params.length; i++) {   // parametros
         for (var j = 0; j < variables.length; j++) {  // variables a reeplazar
-            //"dfgdfgdaniel,".match(new RegExp('^daniel|(([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*])daniel((([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*]))|$))','g'))
             sentence_Assign_into_param= params[i].match(new RegExp('^'+variables[j]+'|(([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*])'+variables[j]+'((([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*]))|$))','g'))
             if (sentence_Assign_into_param!=null) {
                 for (var k = 0; k < sentence_Assign_into_param.length; k++) {
@@ -166,6 +157,26 @@ function replace_in(params,assigns){
         }
     }
     console.log(params)
+    console.log("---")
+
+    var perf = "T("
+    console.log(user_variables)
+    user_variables.forEach(function(item,index, arr){
+        perf+=item+","
+    });
+    perf+=") = "
+
+    global_variables = get_params_principal_function(header_function)
+    console.log(global_variables)
+    global_variables.forEach(function(item,index, arr){
+        if (user_variables.indexOf(remove_tabs(item))!==-1) {
+            perf+= " T("+params[index]+") +"
+        }
+    });
+
+    console.log(perf)
+    $("#porUltimo").append("<div>"+perf+"</div>")
+
 }
 function get_params_call_function(call){
     return ((call.split("(")[1]).split(")")[0]).split(",")
@@ -179,24 +190,15 @@ function get_recurrences(rout,dict_alg, header_function){
                 name_function= name_function.replace(/\s+/g, '');
                 line= line.replace(/\s+/g, '');
                 if (line.indexOf(name_function)!==-1) {
-                    //console.log(line)
                     assigns = search_asig(rout)
                     params = get_params_call_function(line)
-                    replace_in(params, assigns)
-                    //ecuations.push(ecuac)
+                    replace_in(params, assigns,header_function)
                 }else{
                     rout.push(dict_alg[item])
                 }
             }else{
                 get_recurrences(rout.slice(), dict_alg[item], header_function)
             }
-                /*if ((dict_alg[item]).indexOf(name_function)!==-1) {
-                    
-                }else{
-                    rout.push(dict_alg[item])
-                }
-            }else{
-                get_recurrences(rout, dict_alg[item], header_function)*/
             
     });
        
