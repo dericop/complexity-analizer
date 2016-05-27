@@ -1,4 +1,6 @@
 var padre = 1;
+var user_variables = []
+
 $(document).ready(function(){
 
     function Node(){}; // Definición de la estructura nodo
@@ -462,6 +464,19 @@ $(document).ready(function(){
             * Suceso de eventos al presionar el botón de ejecución del código
         */
         pk_ada.cleanCodeArea();
+        $("#modalVariables").openModal();
+        
+    })
+
+    $("#executeTranslate_v").click(function(){
+        user_variables = $("#variables").val().split(",");
+        exec();
+        setInterval(function(){
+            $("#modalVariables").closeModal();
+        }, 1000)
+    })
+
+    function exec () {
         pk_ada.executeCode();
         $('.tooltipped').tooltip({delay: 50});
         pk_ada.tree.searchLevel(pk_ada.tree.root, 1);
@@ -470,7 +485,7 @@ $(document).ready(function(){
         pk_ada.tree.calculateFinalPositions(pk_ada.tree.root, 0);
         //$("#chartWindow7").css({"left":"10em;"});
         console.log(pk_ada.tree)
-    })
+    }
 
     $(".loadN").click(function(event){
         /*
