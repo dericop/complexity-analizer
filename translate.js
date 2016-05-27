@@ -439,7 +439,7 @@ function add_params_to_execute(final_javascript){
 	for (var i = 0; i < user_variables.length-1; i++) {
 		array_user+= user_variables[i]+","
 	}
-	array_user += user_variables[user_variables.length-1]"]"
+	array_user += user_variables[user_variables.length-1]+"]"
 	new_function=last_function
 	new_function=new_function.replace('(','(padre,')
 	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre,'+array_user+')')
