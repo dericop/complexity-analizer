@@ -131,7 +131,7 @@ function depth_insert_line(levels,num_line,line){
 var ecuations = []
 
 function is_useful(obj){
-    if (obj === "object") 
+    if (typeof(obj) === "object") 
         return false
     return true 
 }
@@ -156,21 +156,29 @@ function get_recurrences(rout,dict_alg, header_function){
     keys = Object.keys(dict_alg).sort()
 
     keys.forEach(function(item,index, arr){
-             if (is_useful(dict_alg[item])) {
-                if (dict_alg[item].contains(header_function.split("(")[0]+"(")) {
+            if (is_useful(dict_alg[item])) {
+                if (dict_alg[item].indexOf((header_function.split("(")[0]+"(").split("function")[1])!==-1) {
                     assigns = search_asig(rout)
                     params = get_params_principal_function(header_function)
-
-                    console.log(assigns)
-                    console.log(params)
+                }else{
+                    rout.push(dict_alg[item])
                     //ecuac = replaceIn(params, assigns)
                     //ecuations.push(ecuac)
-                }else
-                    rout.push(dict_alg[item])
-            }else
-                console.log("")
+                }
+            }else{
+                console.log(rout)
+                console.log(dict_alg[item])
                 get_recurrences(rout, dict_alg[item], header_function)
-    })
+            }
+                /*if ((dict_alg[item]).indexOf(name_function)!==-1) {
+                    
+                }else{
+                    rout.push(dict_alg[item])
+                }
+            }else{
+                get_recurrences(rout, dict_alg[item], header_function)*/
+            
+    });
        
 }
 
