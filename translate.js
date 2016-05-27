@@ -434,9 +434,15 @@ function get_function__calls(final_javascript,principal){
 }
 function add_params_to_execute(final_javascript){
 	last_function=header_principal_function(final_javascript)
+	user_params = get_params_principal_function(final_javascript)
+	array_user = "["
+	for (var i = 0; i < user_variables.length-1; i++) {
+		array_user+= user_variables[i]+","
+	}
+	array_user += user_variables[user_variables.length-1]"]"
 	new_function=last_function
 	new_function=new_function.replace('(','(padre,')
-	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre)')
+	new_function=new_function.replace('\{','\{\n\tpadre = pk_ada.drawNode(padre,'+array_user+')')
 
 	final_javascript=final_javascript.replace(last_function,new_function)
     calls= get_function__calls(final_javascript,(last_function.split("(")[0]).split(" ")[1])
