@@ -108,7 +108,7 @@ function mapping_lines(final_javascript){
             }
         }
     };
-    console.log(dictionary_level)
+    return dictionary_level
 }
 
 
@@ -127,6 +127,53 @@ function depth_insert_line(levels,num_line,line){
     string +='.l'+num_line+' = "'+line+'"'
     return string
 }
+
+var ecuations = []
+
+function is_useful(obj){
+    if (obj === "object") 
+        return false
+    return true 
+}
+
+function search_asig(route){
+    response = {}
+    route.forEach(function(item, index, arr){
+        parts = item.split("(")
+        if (parts.length>1) 
+            parts = parts[1].split(";")
+        
+        parts = parts[0].split("=")
+        response[parts[0]] = parts[1]
+    })
+    return response
+}
+
+function get_recurrences(rout,dict_alg, header_function){
+
+    console.log(Object.keys(dict_alg).sort())
+
+    keys = Object.keys(dict_alg).sort()
+
+    keys.forEach(function(item,index, arr){
+             if (is_useful(dict_alg[item])) {
+                if (dict_alg[item].contains(header_function.split("(")[0]+"(")) {
+                    assigns = search_asig(rout)
+                    params = get_params_principal_function(header_function)
+
+                    console.log(assigns)
+                    console.log(params)
+                    //ecuac = replaceIn(params, assigns)
+                    //ecuations.push(ecuac)
+                }else
+                    rout.push(dict_alg[item])
+            }else
+                console.log("")
+                get_recurrences(rout, dict_alg[item], header_function)
+    })
+       
+}
+
 
 
 

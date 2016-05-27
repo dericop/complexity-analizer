@@ -458,7 +458,10 @@ function main(pseudocode){
 		var newline = test_and_get_line(lines[i])
 		new_code += newline+"\n"
 	}
-	mapping_lines(new_code)
+	dict_alg = mapping_lines(new_code)
+	get_recurrences([],dict_alg["l0"], new_code)
+
+
 	new_code = add_params_to_execute(new_code)
 
 	//console.log(new_code)
