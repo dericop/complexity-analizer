@@ -347,8 +347,8 @@ $(document).ready(function(){
     pk_ada.prototype.drawNode = function(padre, variables){
         var varC = "";
         if (variables != null) {
-            for(var i=0; i< variables.length;i++){
-                varC += variables[i].name + " = "+ variables[i].result +". ";
+            for(var i=0; i< user_variables.length;i++){
+                varC += user_variables[i] + " = "+ variables[i] +". ";
             }
         };
 
