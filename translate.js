@@ -459,12 +459,13 @@ function main(pseudocode){
 		new_code += newline+"\n"
 	}
 	dict_alg = mapping_lines(new_code)
+	//console.log(dict_alg)
 	get_recurrences([],dict_alg["l0"], header_principal_function(new_code))
 
 
 	new_code = add_params_to_execute(new_code)
 
-	//console.log(new_code)
+	console.log(new_code)
 	//get_efficiency(get_full_principal_function(new_code),['n','origen','auxiliar','destino'])
 	return new_code;
 }

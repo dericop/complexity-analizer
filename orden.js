@@ -1,3 +1,5 @@
+var ecuations = {}
+
 var algorithms = [
     {
         "name": "factorial",
@@ -55,7 +57,6 @@ function get_full_principal_function(final_javascript){
 function called_header_function_external(full_principal_function,header_principal_function){
     array_header_external_functions = [] 
     array_lines = full_principal_function.split(header_principal_function)[1].match(/[a-zA-Z][a-zA-Z0-9]*\(.*\)/g)
-    console.log(array_lines)
     for (var i = 0; i < array_lines.length; i++) {
         name_function = (array_lines[i].replace(/^\s+|\s+$/g, "")).split("(")[0]
         if(array_functions.indexOf(name_function)===-1  && array_name_external_functions.indexOf(name_function)===-1){
@@ -75,6 +76,7 @@ function called_header_function_external(full_principal_function,header_principa
 function remove_white_items(array){
     arr = []
     for (var i = 0; i < array.length; i++) {
+        array[i]=array[i].replace(/^\s+|\s+$/g, "")
         if (array[i]!=="") {
             arr.push(array[i])
         };
@@ -83,15 +85,16 @@ function remove_white_items(array){
 }
 
 function mapping_lines(final_javascript){
-    console.log(final_javascript)
-    console.log("----")
+    //console.log(final_javascript)
+    //console.log("----")
     full_function = get_full_principal_function(final_javascript)
     //full_function= full_function.replace(header_principal_function(final_javascript),"")
+    full_function = full_function.replace(new RegExp('else', 'g'), "")
     array_lines = full_function.split("\n")
     array_lines.shift()
     array_lines=remove_white_items(array_lines)
     array_lines.pop()
-    console.log(array_lines)
+    //console.log(array_lines)
     dictionary_level = {}
     levels = []
     for (var i=0; i < array_lines.length; i++) {
@@ -128,8 +131,6 @@ function depth_insert_line(levels,num_line,line){
     return string
 }
 
-var ecuations = []
-
 function is_useful(obj){
     if (typeof(obj) === "object") 
         return false
@@ -139,36 +140,55 @@ function is_useful(obj){
 function search_asig(route){
     response = {}
     route.forEach(function(item, index, arr){
-        parts = item.split("(")
-        if (parts.length>1) 
-            parts = parts[1].split(";")
-        
-        parts = parts[0].split("=")
-        response[parts[0]] = parts[1]
+        if(item.indexOf("if")===-1 && item.indexOf("while")===-1){
+            if (item.indexOf("=")!==-1) {
+                response[item.split("=")[0]]=item.split("=")[1]
+            }
+        }
     })
+    //console.log(response)
     return response
 }
 
+function replace_in(params,assigns){
+    console.log(params)
+    variables = Object.keys(assigns).reverse()
+    for (var i = 0; i < params.length; i++) {   // parametros
+        for (var j = 0; j < variables.length; j++) {  // variables a reeplazar
+            //"dfgdfgdaniel,".match(new RegExp('^daniel|(([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*])daniel((([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*]))|$))','g'))
+            sentence_Assign_into_param= params[i].match(new RegExp('^'+variables[j]+'|(([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*])'+variables[j]+'((([\,]|[\;]|[\+]|[\-]|[\/]|[\(]|[\)]|[\[]|[\]]|[\\s]|[\*]))|$))','g'))
+            if (sentence_Assign_into_param!=null) {
+                for (var k = 0; k < sentence_Assign_into_param.length; k++) {
+                    temp = sentence_Assign_into_param[k].replace(variables[j],assigns[variables[j]])
+                    params[i]= params[i].replace(sentence_Assign_into_param[k],temp)
+                } 
+            }
+        }
+    }
+    console.log(params)
+}
+function get_params_call_function(call){
+    return ((call.split("(")[1]).split(")")[0]).split(",")
+}
 function get_recurrences(rout,dict_alg, header_function){
-
-    console.log(Object.keys(dict_alg).sort())
-
-    keys = Object.keys(dict_alg).sort()
-
+    keys = Object.keys(dict_alg)
     keys.forEach(function(item,index, arr){
             if (is_useful(dict_alg[item])) {
-                if (dict_alg[item].indexOf((header_function.split("(")[0]+"(").split("function")[1])!==-1) {
+                name_function = (header_function.split("(")[0]+"(").split("function")[1]
+                line = dict_alg[item]
+                name_function= name_function.replace(/\s+/g, '');
+                line= line.replace(/\s+/g, '');
+                if (line.indexOf(name_function)!==-1) {
+                    //console.log(line)
                     assigns = search_asig(rout)
-                    params = get_params_principal_function(header_function)
+                    params = get_params_call_function(line)
+                    replace_in(params, assigns)
+                    //ecuations.push(ecuac)
                 }else{
                     rout.push(dict_alg[item])
-                    //ecuac = replaceIn(params, assigns)
-                    //ecuations.push(ecuac)
                 }
             }else{
-                console.log(rout)
-                console.log(dict_alg[item])
-                get_recurrences(rout, dict_alg[item], header_function)
+                get_recurrences(rout.slice(), dict_alg[item], header_function)
             }
                 /*if ((dict_alg[item]).indexOf(name_function)!==-1) {
                     
