@@ -459,7 +459,7 @@ function main(pseudocode){
 		new_code += newline+"\n"
 	}
 	dict_alg = mapping_lines(new_code)
-	get_recurrences([],dict_alg["l0"], new_code)
+	get_recurrences([],dict_alg["l0"], header_principal_function(new_code))
 
 
 	new_code = add_params_to_execute(new_code)
